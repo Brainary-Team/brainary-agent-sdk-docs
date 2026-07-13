@@ -1,0 +1,55 @@
+name: Deploy to GitHub Pages
+
+# 组装 build.sh 产物（官网 + 已冻结文档版本）并部署到 GitHub Pages。
+# 冻结版本由本地 ./release.sh 生成并提交进 git，故 CI 无需访问 brainary-rs。
+# 首次使用前：Settings → Pages → Source 选 "GitHub Actions"。
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+# deploy-pages 需要的权限
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时刻仅一个部署；新推送取消进行中的旧部署
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: website/pnpm-lock.yaml
+
+      # build.sh 自读 deploy.env 的 SITE_BASE，组装 dist/（官网 + 冻结文档 + 运行时重定向）
+      - name: Build site
+        run: ./build.sh
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

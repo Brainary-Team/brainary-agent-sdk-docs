@@ -1,0 +1,22 @@
+{
+  "name": "brainary-website",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Brainary（领智智能）官方占位官网落地页 — Vite + Tailwind，纯静态、无 CDN 外链",
+  "scripts": {
+    "dev": "vite --port 5174 --strictPort",
+    "build": "vite build",
+    "preview": "vite preview --port 5174 --strictPort"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.2",
+    "tailwindcss": "^4.3.2",
+    "vite": "^8.1.4"
+  },
+  "dependencies": {
+    "@fontsource/geist-mono": "^5.2.8",
+    "@fontsource/geist-sans": "^5.2.5",
+    "@fontsource/sora": "^5.2.8"
+  }
+}

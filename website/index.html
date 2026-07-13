@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brainary · 会自我进化的元认知智能体 | 领智智能</title>
+    <meta
+      name="description"
+      content="Brainary（领智智能）—— 具备元认知、自我认知与自我进化能力的智能体。召之即来，从编码到日常工作、辅助思考与数字分身。"
+    />
+    <meta name="theme-color" content="#04050a" />
+    <!-- 同步标记 JS 可用：让 .reveal 的「初始隐藏」只在有 JS 时生效，避免 JS 失败白屏 -->
+    <script>
+      document.documentElement.classList.add('js')
+    </script>
+    <!-- favicon：内联 SVG（本地，无外链） -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='2.4' fill='%232ff0cf'/%3E%3Ccircle cx='5' cy='6' r='1.6' fill='%237dffe4'/%3E%3Ccircle cx='19' cy='7' r='1.6' fill='%2314b89c'/%3E%3Ccircle cx='6' cy='18' r='1.6' fill='%232ff0cf'/%3E%3Ccircle cx='18' cy='17' r='1.6' fill='%237dffe4'/%3E%3Cg stroke='%232ff0cf' stroke-width='0.9' opacity='0.65'%3E%3Cline x1='12' y1='12' x2='5' y2='6'/%3E%3Cline x1='12' y1='12' x2='19' y2='7'/%3E%3Cline x1='12' y1='12' x2='6' y2='18'/%3E%3Cline x1='12' y1='12' x2='18' y2='17'/%3E%3C/g%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <!-- 背景层：极光 / 蓝图网格 / 噪点（固定，全站铺底） -->
+    <div class="aurora-field"></div>
+    <div class="grid-field"></div>
+    <div class="noise-field"></div>
+
+    <!-- 公共导航（由 partial 注入） -->
+    <header id="site-nav"></header>
+
+    <main id="top">
+      <!-- ── HERO ─────────────────────────────────────────── -->
+      <section class="relative min-h-screen flex items-center overflow-hidden">
+        <canvas id="neural" class="absolute inset-0 w-full h-full"></canvas>
+        <!-- Hero 底部渐隐：足够高且分段柔化，让神经场自然沉入 void，不留硬横边 -->
+        <div
+          class="absolute inset-x-0 bottom-0 h-64 pointer-events-none"
+          style="background: linear-gradient(to top, var(--color-void) 8%, color-mix(in srgb, var(--color-void) 60%, transparent) 42%, transparent)"
+        ></div>
+
+        <div class="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 w-full pt-28 pb-16">
+          <div class="flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-14">
+          <div class="max-w-3xl lg:flex-1 min-w-0">
+            <div class="reveal inline-flex items-center gap-2.5 mb-7">
+              <span class="pill" data-i18n="hero.pill">METACOGNITIVE AGENT</span>
+              <span class="eyebrow" data-i18n="hero.badge">v0 · 预览</span>
+            </div>
+
+            <h1
+              class="reveal font-display font-extrabold tracking-tight leading-[0.95] text-[clamp(3.4rem,11vw,7.5rem)]"
+            >
+              <span class="text-gradient">Brainary</span>
+            </h1>
+
+            <p
+              class="reveal mt-6 font-display text-2xl sm:text-3xl font-semibold text-[var(--color-ink)]"
+            >
+              <span data-i18n="hero.lead1">一个会</span><span
+                id="typewriter"
+                class="cursor text-[var(--color-teal)] mx-1"
+              ></span><span data-i18n="hero.lead2">的智能体</span>
+            </p>
+
+            <p
+              class="reveal mt-5 text-base sm:text-lg text-[var(--color-mist)] leading-relaxed max-w-2xl"
+              data-i18n="hero.para"
+            >
+              一个召之即来的智能体，却不止于编码 —— 它替你写代码、打理日常工作、陪你思考，乃至成为你的数字分身。底层是仿生的元认知内核：<span class="font-mono text-[var(--color-ink)]">会审视自己的推理</span>、从经验中沉淀能力，越用越懂你。
+            </p>
+
+            <div class="reveal mt-9 flex flex-wrap items-center gap-4">
+              <a href="#" class="btn btn-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
+                <span data-i18n="hero.btnDownload">下载 Brainary CLI</span>
+              </a>
+              <a href="docs/" target="_blank" rel="noopener" class="btn btn-ghost">
+                <span data-i18n="hero.btnDocs">查看 SDK 文档</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            </div>
+
+            <!-- telemetry 小条：等宽字体的「参数」感 -->
+            <div class="reveal mt-12 flex flex-wrap gap-x-10 gap-y-4 font-mono text-xs text-[var(--color-faint)]">
+              <div><span class="text-[var(--color-teal)]">◇</span> <span data-i18n="hero.t1">编码 · 日常 · 思考 · 分身</span></div>
+              <div><span class="text-[var(--color-mint)]">◇</span> <span data-i18n="hero.t2">元认知 · 自我进化</span></div>
+              <div><span class="text-[var(--color-deep-teal)]">◇</span> <span data-i18n="hero.t3">记忆 · 工具 · 自省闭环</span></div>
+            </div>
+          </div>
+
+          <!-- 签名元素:self-trace 自省流 —— 把「替你做事 + 审视自己的推理 + 沉淀技能」画出来。
+               三个示例场景(编码自审 / 会议纪要 / 流程蒸馏):tab 手动切换,每幕播完自动轮到下一幕。
+               每幕都保留缩进的青绿「内心独白」车道(◆)与「技能已沉淀」收束;诚实占位,头部带 DEMO 标签。
+               无 JS 时第一幕静态直出;reduced-motion 时当前幕整段直出、不轮播,tab 仍可切换。 -->
+          <aside class="reveal w-full max-w-lg lg:w-[28rem] xl:w-[32rem] lg:shrink-0" aria-label="Brainary self-trace 自省流示意面板" data-i18n-aria="a11y.trace">
+            <div id="self-trace" class="trace-panel glass">
+              <div class="trace-head">
+                <span class="trace-dot" aria-hidden="true"></span>
+                <span class="trace-title font-mono" data-i18n="trace.title">brainary · self-trace</span>
+                <span class="trace-tag font-mono" data-i18n="trace.tag">DEMO 示意</span>
+              </div>
+              <div class="trace-tabs" role="tablist" aria-label="切换自省流示例场景" data-i18n-aria="a11y.traceTabs">
+                <button type="button" id="trace-tab-1" class="trace-tab font-mono is-active" role="tab" aria-selected="true" aria-controls="trace-s1" data-i18n="trace.tab1">编码自审</button>
+                <button type="button" id="trace-tab-2" class="trace-tab font-mono" role="tab" aria-selected="false" aria-controls="trace-s2" data-i18n="trace.tab2">会议纪要</button>
+                <button type="button" id="trace-tab-3" class="trace-tab font-mono" role="tab" aria-selected="false" aria-controls="trace-s3" data-i18n="trace.tab3">流程蒸馏</button>
+              </div>
+              <ol id="trace-s1" class="trace-body trace-scene is-active font-mono" role="tabpanel" aria-labelledby="trace-tab-1">
+                <li class="trace-line t-task" data-i18n="trace.s1.l1">任务:实现登录限流中间件,附带测试</li>
+                <li class="trace-line t-dim" data-i18n="trace.s1.l2">规划 4 步 · 检索代码库记忆 ×1</li>
+                <li class="trace-line t-ok" data-i18n="trace.s1.l3">步骤 1 — 写出中间件 + 单元测试</li>
+                <li class="trace-line t-reflect" data-i18n="trace.s1.l4">自省:同秒并发请求会漏计 —— 边界没盖住</li>
+                <li class="trace-line t-ok" data-i18n="trace.s1.l5">步骤 2 — 补上竞态用例,修正计数逻辑</li>
+                <li class="trace-line t-reflect" data-i18n="trace.s1.l6">元认知:「先写后审」这套打法值得固化</li>
+                <li class="trace-line t-skill" data-i18n="trace.s1.l7">技能已沉淀:code-selfcheck · 下次直接调用</li>
+              </ol>
+              <ol id="trace-s2" class="trace-body trace-scene font-mono" role="tabpanel" aria-labelledby="trace-tab-2">
+                <li class="trace-line t-task" data-i18n="trace.s2.l1">任务:整理本周会议纪要,产出待办清单</li>
+                <li class="trace-line t-dim" data-i18n="trace.s2.l2">规划 3 步 · 调用长期记忆 ×2</li>
+                <li class="trace-line t-ok" data-i18n="trace.s2.l3">步骤 1 — 提取各场会议要点</li>
+                <li class="trace-line t-reflect" data-i18n="trace.s2.l4">自省:证据还不足,先回读原文再下结论</li>
+                <li class="trace-line t-ok" data-i18n="trace.s2.l5">步骤 2 — 交叉核对,修正 1 处结论</li>
+                <li class="trace-line t-reflect" data-i18n="trace.s2.l6">元认知:这套流程可复用 → 沉淀为技能</li>
+                <li class="trace-line t-skill" data-i18n="trace.s2.l7">技能已沉淀:meeting-digest · 下次直接调用</li>
+              </ol>
+              <ol id="trace-s3" class="trace-body trace-scene font-mono" role="tabpanel" aria-labelledby="trace-tab-3">
+                <li class="trace-line t-task" data-i18n="trace.s3.l1">任务:汇总数据周报 —— 已是第 3 次做</li>
+                <li class="trace-line t-dim" data-i18n="trace.s3.l2">检索情景记忆 · 命中相似轨迹 ×2</li>
+                <li class="trace-line t-reflect" data-i18n="trace.s3.l3">自省:同样的步骤重复 3 遍,该蒸馏了</li>
+                <li class="trace-line t-ok" data-i18n="trace.s3.l4">步骤 1 — 对齐三次轨迹,抽出稳定骨架</li>
+                <li class="trace-line t-ok" data-i18n="trace.s3.l5">步骤 2 — 参数化差异项,生成技能模板</li>
+                <li class="trace-line t-reflect" data-i18n="trace.s3.l6">元认知:同类任务以后跳过规划,直接调用</li>
+                <li class="trace-line t-skill" data-i18n="trace.s3.l7">技能已沉淀:weekly-report · 已入技能库</li>
+              </ol>
+            </div>
+          </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 能力 ─────────────────────────────────────────── -->
+      <section id="capabilities" class="relative max-w-6xl mx-auto px-5 sm:px-8 py-20">
+        <div class="reveal max-w-2xl mb-14">
+          <span class="eyebrow" data-i18n="cap.eyebrow">核心能力</span>
+          <h2 class="mt-3 font-display font-bold text-3xl sm:text-4xl tracking-tight" data-i18n="cap.title">
+            不只是调用模型，<br class="hidden sm:block" />而是<span class="text-gradient">会思考自己</span>的智能体
+          </h2>
+        </div>
+
+        <!-- 非对称 bento：元认知 / 一行接入 为宽幅 featured，中间两项收窄，织成编织式布局 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-5">
+          <!-- 01 元认知（featured · 宽）：手绘「自我观察」突触环 -->
+          <div class="reveal glass glow-card p-6 sm:p-7 lg:col-span-4 flex flex-col lg:flex-row lg:items-center gap-5 overflow-hidden">
+            <span class="synapse-ico shrink-0 grid place-items-center w-14 h-14 rounded-2xl glass">
+              <svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="16" cy="17.5" r="6.6"/>
+                <path d="M9.4 13 C 8.8 5.4, 23.2 5.4, 22.6 13"/>
+                <path d="M22.6 13 l -2.5 -0.7 M22.6 13 l -0.5 -2.6"/>
+                <circle class="spark" cx="16" cy="17.5" r="1.9" fill="currentColor" stroke="none"/>
+              </svg>
+            </span>
+            <div>
+              <div class="flex items-center gap-3 mb-1.5">
+                <span class="bento-index">01</span>
+                <h3 class="font-display font-semibold text-xl" data-i18n="cap.c1.title">元认知</h3>
+              </div>
+              <p class="text-sm text-[var(--color-mist)] leading-relaxed max-w-lg" data-i18n="cap.c1.desc">
+                审视自己的推理过程，知道自己知道什么、不知道什么，并据此调整策略 —— 一个会回看自身思维的系统。
+              </p>
+            </div>
+            <!-- 卡片右侧静景(占位于 flex 尾部,绝不压字):推理主径 + 虚线折返弧绕回上游 —— 把「回看自身推理」画在卡里 -->
+            <svg
+              class="hidden xl:block shrink-0 ml-auto h-16 w-auto pointer-events-none text-[var(--color-teal)] opacity-40"
+              viewBox="0 0 230 96" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+              <path d="M10 66 C 52 66, 66 48, 106 48 S 178 60, 220 60"/>
+              <circle cx="10" cy="66" r="2.6" fill="currentColor" stroke="none"/>
+              <circle cx="106" cy="48" r="3" fill="currentColor" stroke="none"/>
+              <circle cx="220" cy="60" r="2.6" fill="currentColor" stroke="none"/>
+              <path stroke-dasharray="3 5" d="M156 52 C 156 12, 62 12, 60 46"/>
+              <path d="M60 46 l -3.2 -5 M60 46 l 5.4 -2.2"/>
+            </svg>
+          </div>
+
+          <!-- 02 自我进化（窄）：手绘「分叉生长」树突 -->
+          <div class="reveal glass glow-card p-6 lg:col-span-2 flex flex-col">
+            <div class="flex items-center justify-between mb-5">
+              <span class="synapse-ico grid place-items-center w-12 h-12 rounded-2xl glass">
+                <svg width="24" height="24" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 27 L16 18"/>
+                  <path d="M16 18 C 16 13 10.5 13.5 9.5 8.5"/>
+                  <path d="M16 18 C 16 13 21.5 13.5 22.5 8.5"/>
+                  <path d="M16 18 L16 10"/>
+                  <circle cx="16" cy="27" r="1.7"/>
+                  <circle class="spark" cx="9.5" cy="8.5" r="1.8" fill="currentColor" stroke="none"/>
+                  <circle cx="22.5" cy="8.5" r="1.5" fill="currentColor" stroke="none"/>
+                  <circle cx="16" cy="9.5" r="1.5" fill="currentColor" stroke="none"/>
+                </svg>
+              </span>
+              <span class="bento-index">02</span>
+            </div>
+            <h3 class="font-display font-semibold text-lg mb-2" data-i18n="cap.c2.title">自我进化</h3>
+            <p class="text-sm text-[var(--color-mist)] leading-relaxed" data-i18n="cap.c2.desc">
+              从交互与经验中沉淀可复用能力，越用越强，无需每次从零开始。
+            </p>
+          </div>
+
+          <!-- 03 仿生架构（窄）：手绘「感知—记忆—决策—行动」闭环 -->
+          <div class="reveal glass glow-card p-6 lg:col-span-2 flex flex-col">
+            <div class="flex items-center justify-between mb-5">
+              <span class="synapse-ico grid place-items-center w-12 h-12 rounded-2xl glass">
+                <svg width="24" height="24" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="16" cy="5.6" r="2.3"/>
+                  <circle cx="26.4" cy="16" r="2.3"/>
+                  <circle cx="16" cy="26.4" r="2.3"/>
+                  <circle cx="5.6" cy="16" r="2.3"/>
+                  <path d="M16 7.9 L16 14"/><path d="M24.1 16 L18 16"/>
+                  <path d="M16 24.1 L16 18"/><path d="M7.9 16 L14 16"/>
+                  <path d="M16 7.9 A 8.4 8.4 0 0 1 24.1 16"/>
+                  <path d="M24.1 16 A 8.4 8.4 0 0 1 16 24.1"/>
+                  <path d="M16 24.1 A 8.4 8.4 0 0 1 7.9 16"/>
+                  <path d="M7.9 16 A 8.4 8.4 0 0 1 16 7.9"/>
+                  <circle class="spark" cx="16" cy="16" r="1.7" fill="currentColor" stroke="none"/>
+                </svg>
+              </span>
+              <span class="bento-index">03</span>
+            </div>
+            <h3 class="font-display font-semibold text-lg mb-2" data-i18n="cap.c3.title">仿生架构</h3>
+            <p class="text-sm text-[var(--color-mist)] leading-relaxed" data-i18n="cap.c3.desc">
+              感知—记忆—决策—行动的类脑闭环，让能力像器官一样可组合、可协作。
+            </p>
+          </div>
+
+          <!-- 04 一行接入（featured · 宽）：手绘「单条突触注入神经元」 -->
+          <div class="reveal glass glow-card p-6 sm:p-7 lg:col-span-4 flex flex-col lg:flex-row lg:items-center gap-5">
+            <span class="synapse-ico shrink-0 grid place-items-center w-14 h-14 rounded-2xl glass">
+              <svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="22" cy="16" r="5.6"/>
+                <path d="M3 16 L14.6 16"/>
+                <path d="M11.5 12.9 L14.8 16 L11.5 19.1"/>
+                <circle class="spark" cx="22" cy="16" r="1.9" fill="currentColor" stroke="none"/>
+              </svg>
+            </span>
+            <div>
+              <div class="flex items-center gap-3 mb-1.5">
+                <span class="bento-index">04</span>
+                <h3 class="font-display font-semibold text-xl" data-i18n="cap.c4.title">多种身位</h3>
+              </div>
+              <p class="text-sm text-[var(--color-mist)] leading-relaxed max-w-lg" data-i18n="cap.c4.desc">
+                从编码到日常工作、辅助思考，乃至你的<span class="font-mono text-[var(--color-ink)]">数字分身</span> —— 同一个会进化的元认知内核，换一副身位继续懂你。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 快捷入口 ─────────────────────────────────────── -->
+      <section class="relative max-w-6xl mx-auto px-5 sm:px-8 py-10">
+        <div class="reveal mb-10">
+          <span class="eyebrow" data-i18n="entry.eyebrow">快捷入口</span>
+          <h2 class="mt-3 font-display font-bold text-3xl sm:text-4xl tracking-tight" data-i18n="entry.title">从这里开始</h2>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-5">
+          <!-- CLI 下载：占位 # -->
+          <a href="#" class="reveal glass glow-card p-7 flex flex-col group">
+            <div class="flex items-center justify-between mb-6">
+              <span class="synapse-ico grid place-items-center w-11 h-11 rounded-xl glass">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
+              </span>
+              <span class="font-mono text-[0.6rem] tracking-widest text-[var(--color-faint)]" data-i18n="entry.cli.tag">占位</span>
+            </div>
+            <h3 class="font-display font-semibold text-xl mb-2" data-i18n="entry.cli.title">下载 Brainary CLI</h3>
+            <p class="text-sm text-[var(--color-mist)] leading-relaxed flex-1" data-i18n="entry.cli.desc">
+              获取命令行工具，本地跑通第一个智能体。二进制包即将提供。
+            </p>
+            <span class="mt-5 inline-flex items-center gap-1.5 text-sm text-[var(--color-teal)] group-hover:gap-2.5 transition-all">
+              <span data-i18n="entry.cli.cta">获取 CLI</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </a>
+
+          <!-- SDK 文档：真实跳 /docs/，新标签页打开、保留官网 -->
+          <a href="docs/" target="_blank" rel="noopener" class="reveal glass glow-card p-7 flex flex-col group">
+            <div class="flex items-center justify-between mb-6">
+              <span class="synapse-ico grid place-items-center w-11 h-11 rounded-xl glass">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M14 3v6h6"/></svg>
+              </span>
+              <span class="pill" data-i18n="entry.sdk.tag">已上线</span>
+            </div>
+            <h3 class="font-display font-semibold text-xl mb-2" data-i18n="entry.sdk.title">SDK 文档</h3>
+            <p class="text-sm text-[var(--color-mist)] leading-relaxed flex-1" data-i18n="entry.sdk.desc">
+              brainary-sdk 的完整用户文档：入口、Options、消息模型、工具与 primitive。
+            </p>
+            <span class="mt-5 inline-flex items-center gap-1.5 text-sm text-[var(--color-teal)] group-hover:gap-2.5 transition-all">
+              <span data-i18n="entry.sdk.cta">进入文档</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </a>
+
+          <!-- Code SDK 文档：未来产品，占位 # + SOON -->
+          <a href="#" class="reveal glass glow-card p-7 flex flex-col group">
+            <div class="flex items-center justify-between mb-6">
+              <span class="grid place-items-center w-11 h-11 rounded-xl glass">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-violet)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 6l-2 12"/></svg>
+              </span>
+              <span class="font-mono text-[0.6rem] tracking-widest text-[var(--color-faint)]" data-i18n="entry.code.tag">SOON</span>
+            </div>
+            <h3 class="font-display font-semibold text-xl mb-2" data-i18n="entry.code.title">Code SDK 文档</h3>
+            <p class="text-sm text-[var(--color-mist)] leading-relaxed flex-1" data-i18n="entry.code.desc">
+              面向编码场景的 Brainary Code 产品文档，正在打磨，敬请期待。
+            </p>
+            <span class="mt-5 inline-flex items-center gap-1.5 text-sm text-[var(--color-faint)]" data-i18n="entry.code.cta">
+              即将上线
+            </span>
+          </a>
+        </div>
+      </section>
+
+      <!-- ── 收尾 CTA ─────────────────────────────────────── -->
+      <section class="relative max-w-6xl mx-auto px-5 sm:px-8 py-16">
+        <div class="reveal glass rounded-2xl p-10 sm:p-14 text-center overflow-hidden relative">
+          <div
+            class="absolute inset-0 -z-10 opacity-60"
+            style="background: radial-gradient(50% 120% at 50% 0%, color-mix(in srgb, var(--color-teal) 26%, transparent), transparent 70%)"
+          ></div>
+          <h2 class="font-display font-bold text-3xl sm:text-4xl tracking-tight" data-i18n="cta.title">
+            一个会思考自己的智能体，替你做事
+          </h2>
+          <p class="mt-4 text-[var(--color-mist)] max-w-xl mx-auto" data-i18n="cta.desc">
+            从写代码到打理日常、辅助思考与数字分身 —— Brainary 会自省、会进化，越用越懂你。
+          </p>
+          <div class="mt-8 flex flex-wrap justify-center gap-4">
+            <a href="#" class="btn btn-primary" data-i18n="cta.btnDownload">下载 Brainary CLI</a>
+            <a href="docs/" target="_blank" rel="noopener" class="btn btn-ghost" data-i18n="cta.btnDocs">查看 SDK 文档</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 公共页脚（由 partial 注入） -->
+    <footer id="site-footer"></footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

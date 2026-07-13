@@ -1,0 +1,397 @@
+@import "tailwindcss";
+
+/* ────────────────────────────────────────────────────────────
+   Brainary 官网设计系统（Tailwind v4 · CSS-first tokens）
+   方向：仿生神经 · Bionic
+   基调：深渊黑底 + 生物荧光青绿（唯一 hero 色）+ 克制紫点缀
+         + 会呼吸的突触场 + 活体质感玻璃
+   纪律：一个主色贯穿全场，退掉四色彩虹渐变；emoji 一律换手绘突触线型
+   字体：Sora（display）/ Geist Sans（body）/ Geist Mono（telemetry 标签）
+──────────────────────────────────────────────────────────── */
+@theme {
+  --color-void: #04070a;
+  --color-abyss: #071019;
+  --color-panel: #0a1620;
+  --color-hair: #16323a;
+
+  --color-ink: #eafff9;
+  --color-mist: #9db4b4;
+  --color-faint: #5f7878;
+
+  /* hero 色系：生物荧光青绿一族（唯一主色，全站贯穿） */
+  --color-teal: #2ff0cf;
+  --color-mint: #7dffe4;
+  --color-deep-teal: #14b89c;
+
+  /* 辅助：仅用于点缀 / 神经连线中段，绝不喧宾夺主 */
+  --color-azure: #3f7fd6;
+  --color-violet: #8f7bff;
+
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --shadow-glow: 0 0 0 1px color-mix(in srgb, var(--color-teal) 30%, transparent),
+    0 22px 70px -24px color-mix(in srgb, var(--color-teal) 55%, transparent);
+}
+
+/* ── 基础 ──────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-void);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv01", "ss01";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-teal) 40%, transparent);
+  color: #04211c;
+}
+
+/* 极光背景层：生物荧光径向叠加，青绿主导、紫仅一抹 */
+.aurora-field {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 44% at 16% 6%, color-mix(in srgb, var(--color-teal) 22%, transparent), transparent 70%),
+    radial-gradient(50% 40% at 86% 10%, color-mix(in srgb, var(--color-deep-teal) 20%, transparent), transparent 68%),
+    radial-gradient(70% 60% at 62% 108%, color-mix(in srgb, var(--color-violet) 12%, transparent), transparent 72%),
+    var(--color-void);
+}
+
+/* 软点阵：细胞/生物膜感，替代僵硬的蓝图方格 */
+.grid-field {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--color-teal) 26%, transparent) 1px,
+    transparent 1.4px
+  );
+  background-size: 30px 30px;
+  mask-image: radial-gradient(circle at 50% 26%, black, transparent 72%);
+  opacity: 0.35;
+  animation: field-breathe 14s ease-in-out infinite;
+}
+
+/* 整个点阵极缓地「呼吸」，像活体表面 */
+@keyframes field-breathe {
+  0%, 100% { opacity: 0.28; background-size: 30px 30px; }
+  50% { opacity: 0.4; background-size: 31.5px 31.5px; }
+}
+
+/* 细颗粒噪点，压掉渐变的塑料感 */
+.noise-field {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── 排版原子 ─────────────────────────────────────────── */
+.font-display { font-family: var(--font-display); }
+.font-mono { font-family: var(--font-mono); }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+/* 品牌 / 强调渐变：收敛到青绿一族（ink → teal → mint），单一主色 */
+.text-gradient {
+  background: linear-gradient(102deg, var(--color-ink) 0%, var(--color-teal) 56%, var(--color-mint) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── 突触线型图标（替代 emoji）──────────────────────────
+   容器 + 线条描边统一 teal；hover 时整卡驱动图标微微「点亮」 */
+.synapse-ico {
+  color: var(--color-teal);
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--color-teal) 45%, transparent));
+}
+.synapse-ico svg { display: block; }
+/* 图标里的「信号点」缓慢脉动，暗示活体传导 */
+.synapse-ico .spark { animation: spark-pulse 2.6s ease-in-out infinite; transform-origin: center; }
+@keyframes spark-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+/* ── 玻璃面板 + 发光边框（活体质感）──────────────────── */
+.glass {
+  position: relative;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-panel) 80%, transparent), color-mix(in srgb, var(--color-abyss) 90%, transparent));
+  border: 1px solid color-mix(in srgb, var(--color-hair) 90%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-radius: 1.15rem;
+}
+
+/* hairline 顶部高光，玻璃质感关键（带一丝青绿膜色） */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-teal) 24%, transparent), transparent 42%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.glow-card {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s, box-shadow 0.45s;
+}
+.glow-card:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--color-teal) 60%, transparent);
+  box-shadow: var(--shadow-glow);
+}
+/* 卡片 hover 时点亮内部突触图标的信号点 */
+.glow-card:hover .synapse-ico { filter: drop-shadow(0 0 16px color-mix(in srgb, var(--color-teal) 70%, transparent)); }
+
+/* ── 按钮 ─────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.8rem 1.4rem;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  line-height: 1;
+  transition: transform 0.25s, box-shadow 0.3s, background 0.3s, border-color 0.3s;
+  will-change: transform;
+}
+.btn:active { transform: translateY(1px) scale(0.99); }
+
+/* 主按钮：青绿一族渐变（mint → teal → deep-teal），无杂色 */
+.btn-primary {
+  color: #032019;
+  background: linear-gradient(100deg, var(--color-mint), var(--color-teal) 52%, var(--color-deep-teal));
+  box-shadow: 0 12px 38px -14px color-mix(in srgb, var(--color-teal) 85%, transparent);
+  font-weight: 600;
+}
+.btn-primary:hover {
+  box-shadow: 0 18px 50px -12px color-mix(in srgb, var(--color-teal) 80%, transparent);
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  color: var(--color-ink);
+  background: color-mix(in srgb, var(--color-panel) 60%, transparent);
+  border: 1px solid var(--color-hair);
+}
+.btn-ghost:hover {
+  border-color: color-mix(in srgb, var(--color-teal) 60%, transparent);
+  background: color-mix(in srgb, var(--color-panel) 90%, transparent);
+  transform: translateY(-2px);
+}
+
+/* ── 入场动画（滚动揭示 + 载入 stagger）──────────────── */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* 默认可见（无 JS / JS 失败也不会白屏）；仅当 <html class="js"> 时才先隐藏，
+   由 IntersectionObserver 滚动揭示。这样入场动画是纯增强，不牺牲健壮性。 */
+.js .reveal {
+  opacity: 0;
+}
+.js .reveal.in {
+  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* 打字机光标 */
+.cursor::after {
+  content: "▌";
+  color: var(--color-teal);
+  animation: blink 1.05s steps(1) infinite;
+  margin-left: 2px;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* 顶部导航滚动后的玻璃背板 */
+.nav-scrolled {
+  background: color-mix(in srgb, var(--color-void) 78%, transparent);
+  backdrop-filter: blur(16px) saturate(150%);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-hair) 80%, transparent);
+}
+
+.pill {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-teal) 42%, transparent);
+  color: var(--color-teal);
+  background: color-mix(in srgb, var(--color-teal) 10%, transparent);
+}
+
+/* bento 索引号：大号等宽「机读」编号，弱化为背景层次 */
+.bento-index {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: color-mix(in srgb, var(--color-teal) 70%, transparent);
+}
+
+/* ── self-trace 自省流面板（签名元素）────────────────────
+   一次任务执行轨迹:普通执行行 + 缩进的青绿「内心独白」车道(◆)。
+   三个场景 tab 可切换,播完自动轮到下一幕。
+   无 JS 时第一幕静态可见;reduced-motion 时当前幕整段直出、不轮播。 */
+.trace-panel {
+  padding: 1.7rem 1.85rem 2rem;
+  /* 首屏主角:一层青绿环境光,让面板从背景神经场中「浮」出来 */
+  box-shadow: 0 34px 110px -42px color-mix(in srgb, var(--color-teal) 45%, transparent);
+}
+.trace-head {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1.05rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-hair) 85%, transparent);
+}
+/* 场景 tab:等宽小胶囊,当前幕点亮为青绿 */
+.trace-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+.trace-tab {
+  font-size: 0.74rem;
+  letter-spacing: 0.07em;
+  padding: 0.46rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-hair) 70%, transparent);
+  color: var(--color-faint);
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.3s, border-color 0.3s, background 0.3s;
+}
+.trace-tab:hover { color: var(--color-mist); border-color: var(--color-hair); }
+.trace-tab.is-active {
+  color: var(--color-teal);
+  border-color: color-mix(in srgb, var(--color-teal) 45%, transparent);
+  background: color-mix(in srgb, var(--color-teal) 9%, transparent);
+}
+/* 同一时刻只显示当前幕;CSS 常驻加载,无 JS 时 HTML 里的 is-active(第一幕)直出。
+   注意:必须叠 .trace-body 抬特异性,否则会被下方 .trace-body { display:flex } 压掉 */
+.trace-body.trace-scene { display: none; }
+.trace-body.trace-scene.is-active { display: flex; }
+.trace-dot {
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 999px;
+  background: var(--color-teal);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--color-teal) 80%, transparent);
+  animation: spark-pulse 2.6s ease-in-out infinite;
+}
+.trace-title {
+  font-size: 0.85rem;
+  letter-spacing: 0.13em;
+  color: var(--color-mist);
+}
+.trace-tag {
+  margin-left: auto;
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  color: var(--color-faint);
+  border: 1px solid color-mix(in srgb, var(--color-hair) 90%, transparent);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  white-space: nowrap;
+}
+.trace-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
+  font-size: 0.92rem;
+  line-height: 1.72;
+  color: var(--color-mist);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.trace-line {
+  position: relative;
+  padding-left: 1.55rem;
+}
+.trace-line::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.t-task::before { content: "▸"; color: var(--color-teal); }
+.t-dim { color: var(--color-faint); }
+.t-dim::before { content: "·"; color: var(--color-faint); }
+.t-ok::before { content: "✓"; color: var(--color-deep-teal); }
+.t-skill::before { content: "✦"; color: var(--color-mint); }
+/* 内心独白车道:整体右移一档,青绿左缘 + 微弱底色,像页边批注 */
+.t-reflect {
+  margin-left: 1.15rem;
+  padding: 0.45rem 0.7rem 0.45rem 1.6rem;
+  color: var(--color-ink);
+  background: color-mix(in srgb, var(--color-teal) 8%, transparent);
+  border-left: 2px solid color-mix(in srgb, var(--color-teal) 55%, transparent);
+  border-radius: 0.5rem;
+}
+.t-reflect::before { content: "◆"; color: var(--color-teal); left: 0.6rem; top: 0.45rem; }
+/* 有 JS 时先隐藏,由脚本逐行点亮;无 JS 静态直出(与 .reveal 同一门控哲学) */
+.js .trace-line {
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.js .trace-line.on {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── 可见键盘焦点（无障碍地板）───────────────────────── */
+:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-teal) 80%, transparent);
+  outline-offset: 2px;
+  border-radius: 0.3rem;
+}
+.btn:focus-visible { outline-offset: 3px; }
+
+/* 无障碍：尊重减少动效 */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  /* 必须带 .js 前缀压过上方 .js .reveal { opacity: 0 }(媒体查询不增加特异性) */
+  .reveal, .js .reveal { opacity: 1; animation: none; }
+  .cursor::after { animation: none; }
+  .grid-field { animation: none; }
+  .synapse-ico .spark { animation: none; opacity: 0.9; }
+  .trace-dot { animation: none; }
+  .js .trace-line { opacity: 1; transform: none; transition: none; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

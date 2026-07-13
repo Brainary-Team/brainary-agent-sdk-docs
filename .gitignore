@@ -1,0 +1,24 @@
+# Node / VitePress
+node_modules/
+user_docs/.vitepress/dist/
+user_docs/.vitepress/cache/
+
+# 官网（website/，Vite）构建产物
+website/dist/
+
+# 组装后的顶层部署产物（build.sh 生成）
+dist/
+
+# 文档站运行态
+.docs-dev.pid
+.docs-dev.port
+.docs-dev.log
+.web-dev.pid
+.web-dev.port
+.web-dev.log
+
+# OS / editor
+.DS_Store
+
+# 本地临时目录
+local/
