@@ -39,7 +39,7 @@ VER="$(MANIFEST="$MANIFEST" node -e 'console.log(JSON.parse(require("fs").readFi
 
 # ── 3. 提交 ────────────────────────────────────────────────
 # 替换模式会删除旧版本目录；用 -A 让 git 一并暂存这些删除（普通模式无副作用）。
-case " $* " in *" --replace "*) MSG="docs: 替换冻结文档版本 $VER（只保留此版）" ;; *) MSG="docs: 冻结文档版本 $VER" ;; esac
+case " $* " in *" --replace "*) MSG="docs: 替换冻结文档版本 ${VER}（只保留此版）" ;; *) MSG="docs: 冻结文档版本 ${VER}" ;; esac
 step "提交冻结产物与清单（版本 $VER）"
 git -C "$ROOT" add -A user_docs/.versions user_docs/public/versions.json
 git -C "$ROOT" commit -m "$MSG"
