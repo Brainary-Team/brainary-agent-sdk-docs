@@ -17,6 +17,7 @@
 #     ./snapshot.sh --ref <gitref>        # 自动：取指定 ref（分支/tag/commit）的短 hash 版本
 #     ./snapshot.sh --version <str> \     # 显式：给定版本号（未来 semver / brainary-rs 不在场时）
 #         [--commit <fullhash>] [--date <YYYY-MM-DD>]
+#     任意上式可加 --replace           # 替换而非追加：只保留这一版（见文末说明）
 #   环境变量：
 #     BRAINARY_RS_DIR   brainary-rs 仓库路径（默认 ../brainary-rs）
 #     RS_REF            自动派生所用 ref（默认 origin/master；--ref 覆盖之）
@@ -25,6 +26,10 @@
 #
 #   冻结不可覆盖：若 .versions/<VER> 已存在，脚本拒绝执行。
 #   要修正已发布版本，请手动删除该目录后重跑（明确知道自己在做什么）。
+#
+#   --replace  替换模式（预 tag 阶段用）：不追加、只保留这一版。冻结前清掉
+#              .versions/ 下所有既有版本目录（含同名 VER，故可覆盖重冻），
+#              并把 versions.json 重置为「仅含新版本」一条。避免 hash 快照无限堆进 git。
 # ─────────────────────────────────────────────────────────────
 set -euo pipefail
 
@@ -48,13 +53,14 @@ case "$SITE_BASE" in */) ;; *) SITE_BASE="$SITE_BASE/" ;; esac
 export SITE_BASE
 
 # ── 解析参数 ───────────────────────────────────────────────
-VER=""; COMMIT=""; CDATE=""; SUBJ=""; EXPLICIT=0
+VER=""; COMMIT=""; CDATE=""; SUBJ=""; EXPLICIT=0; REPLACE=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --ref)     RS_REF="${2:-}"; shift 2 ;;
     --version) VER="${2:-}"; EXPLICIT=1; shift 2 ;;
     --commit)  COMMIT="${2:-}"; shift 2 ;;
     --date)    CDATE="${2:-}"; shift 2 ;;
+    --replace) REPLACE=1; shift ;;
     -h|--help) grep -E '^#( |$)' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)         fail "未知参数：$1（用法见 ./snapshot.sh --help）" ;;
   esac
@@ -84,7 +90,15 @@ fi
 [[ "$VER" =~ ^[0-9A-Za-z._-]+$ ]] || fail "版本号含非法字符：${VER}（仅允许 [0-9A-Za-z._-]）"
 
 DEST="$VERSIONS_DIR/$VER"
-[ -e "$DEST" ] && fail "版本 $VER 已冻结（$DEST 已存在），拒绝覆盖。"
+if [ "$REPLACE" -eq 1 ]; then
+  # 替换模式：清掉所有既有冻结版本目录（含同名 VER），只留即将冻结的这一版。
+  if [ -d "$VERSIONS_DIR" ] && [ -n "$(ls -A "$VERSIONS_DIR" 2>/dev/null || true)" ]; then
+    step "替换模式：移除既有冻结版本（$(ls -A "$VERSIONS_DIR" | tr '\n' ' ')）"
+    find "$VERSIONS_DIR" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+  fi
+else
+  [ -e "$DEST" ] && fail "版本 $VER 已冻结（$DEST 已存在），拒绝覆盖。用 --replace 可替换重冻。"
+fi
 
 # ── 1. 以 <SITE_BASE>docs/<VER>/ 为 base 构建当前源码 ───────
 step "构建文档 user_docs（DOCS_VERSION=$VER → base '${SITE_BASE}docs/$VER/'）"
@@ -99,11 +113,12 @@ cp -R "$ROOT/user_docs/.vitepress/dist/." "$DEST/"
 # ── 3. 更新可变清单 versions.json（public/ 资源）──────────
 step "更新 versions.json（新增 $VER 并置为 latest）"
 mkdir -p "$(dirname "$MANIFEST")"
-MANIFEST="$MANIFEST" VER="$VER" COMMIT="$COMMIT" CDATE="$CDATE" SUBJ="$SUBJ" RS_REF="$RS_REF" node -e '
+MANIFEST="$MANIFEST" VER="$VER" COMMIT="$COMMIT" CDATE="$CDATE" SUBJ="$SUBJ" RS_REF="$RS_REF" REPLACE="$REPLACE" node -e '
   const fs = require("fs");
-  const { MANIFEST, VER, COMMIT, CDATE, SUBJ, RS_REF } = process.env;
+  const { MANIFEST, VER, COMMIT, CDATE, SUBJ, RS_REF, REPLACE } = process.env;
   let data = { latest: "", versions: [] };
-  if (fs.existsSync(MANIFEST)) data = JSON.parse(fs.readFileSync(MANIFEST, "utf8"));
+  // 替换模式从空清单起（丢弃旧版本条目），只保留即将加入的这一版；否则读现有清单追加。
+  if (REPLACE !== "1" && fs.existsSync(MANIFEST)) data = JSON.parse(fs.readFileSync(MANIFEST, "utf8"));
   data.versions = (data.versions || []).filter(v => v.version !== VER);
   const entry = { version: VER, stable: true };
   if (COMMIT) entry.commit = COMMIT;

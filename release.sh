@@ -9,6 +9,7 @@
 #     ./release.sh                 # 冻结 brainary-rs origin/master 最新 → 短 hash 版本
 #     ./release.sh --ref <gitref>  # 冻结指定 ref
 #     ./release.sh --version 1.0   # 正式 semver 版本
+#     ./release.sh --replace ...   # 替换而非追加：只保留这一版（预 tag 阶段防版本堆积）
 #
 #   提示：CI 部署仅从 main 分支触发。当前若在其它分支，本脚本照常提交推送该分支，
 #         但需合并到 main（或在 GitHub Actions 手动 dispatch）才会真正部署。
@@ -37,9 +38,11 @@ VER="$(MANIFEST="$MANIFEST" node -e 'console.log(JSON.parse(require("fs").readFi
 [ -d "$ROOT/user_docs/.versions/$VER" ] || fail "冻结目录 user_docs/.versions/$VER 不存在，发布中止"
 
 # ── 3. 提交 ────────────────────────────────────────────────
+# 替换模式会删除旧版本目录；用 -A 让 git 一并暂存这些删除（普通模式无副作用）。
+case " $* " in *" --replace "*) MSG="docs: 替换冻结文档版本 $VER（只保留此版）" ;; *) MSG="docs: 冻结文档版本 $VER" ;; esac
 step "提交冻结产物与清单（版本 $VER）"
-git -C "$ROOT" add user_docs/.versions user_docs/public/versions.json
-git -C "$ROOT" commit -m "docs: 冻结文档版本 $VER"
+git -C "$ROOT" add -A user_docs/.versions user_docs/public/versions.json
+git -C "$ROOT" commit -m "$MSG"
 
 # ── 4. 推送当前分支 ────────────────────────────────────────
 BRANCH="$(git -C "$ROOT" rev-parse --abbrev-ref HEAD)"
