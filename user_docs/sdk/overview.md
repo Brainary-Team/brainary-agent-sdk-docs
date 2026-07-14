@@ -7,7 +7,11 @@ outline: 2
 > **读完本页你能**：知道 `brainary-agent-sdk` 是什么、为什么它是应用开发者的默认入口，看懂两个宿主内入口的取舍（以及第三个、跑沙箱 PoA 的入口）与 v1 的能力填充度，并找到本章各页的入口。
 
 ::: warning brainary-agent-sdk 尚未合并进主干
-`brainary-agent-sdk` 目前在**独立开发分支**上开发、尚未合并进主干；本章按「已合并」处理。合并前，`crates/brainary-agent-sdk/` 及其 workspace 成员在主干上尚不可见。文中引用的 `crates/brainary-agent-sdk/src/*.rs` 源码路径均以合并后为准。若你现在就想跑通端到端流程，可用 PoA 或 explore CLI。
+`brainary-agent-sdk` 目前在**独立开发分支**上开发、尚未合并进主干。合并前，`crates/brainary-agent-sdk/` 及其 workspace 成员在主干上尚不可见。文中引用的 `crates/brainary-agent-sdk/src/*.rs` 源码路径均以合并后为准。
+:::
+
+::: danger 当前状态：全部接口规划中、未完成
+本 SDK **全部接口均为 🟠【规划中，未完成】**——架构与签名已规划、尚未实现。本章及各页给出的类型、签名、字段均为**已承诺的形态**，供对齐讨论，非可用实现。
 :::
 
 `brainary-agent-sdk` 是 brainary-rs 的**高层门面 crate**。它把「装配好的 Agent」浓缩成几行调用：一个 `query()` 跑一次性任务，一个 `BrainaryClient` 跑有状态多轮，全部行为收敛到一个 `Options` 配置对象和一条步级 `Message` 流上——你**无需直接接触底层 llmy 类型**。
@@ -32,20 +36,20 @@ brainary-agent-sdk 的接口面按「Brainary-Code-like agent SDK」这一目标
 
 | Brainary（Rust） | 状态 | 去哪页 |
 | --- | --- | --- |
-| `query()` | 🟢 | [两个入口](/sdk/query-and-client) |
-| `BrainaryClient` | 🟢 | [两个入口](/sdk/query-and-client) |
-| `Options`（`Options::builder()`） | 🟢 | [Options](/sdk/options) |
-| `#[tool]` / `FunctionTools` | 🟢 | [自定义工具](/sdk/tools) |
-| `Message` / `ContentBlock` | 🟢 | [消息模型](/sdk/messages) |
-| `InterruptHandle::interrupt()`（句柄） | 🟢 | [中断与护栏](/sdk/interrupt-and-guardrails) |
-| 内置工具目录（read_file/write_file/…，原生名） | 🟢/🟠 | [内置工具目录](/sdk/builtin-tools) |
-| `list_sessions()` / `rename_session()` 等（架构已规划） | 🟠 | [会话管理](/sdk/sessions) |
-| `CanUseTool` / `PermissionMode`（6 模）/ `allowed_tools`（架构已规划） | 🟠 | [权限模型](/sdk/permissions) |
-| `hooks`（PreToolUse 等生命周期钩子，架构已规划） | 🟠 | [Hooks](/sdk/hooks) |
-| `BrainaryError` 枚举 + `ErrorCategory` | 🟡 / 🟠 | [错误处理](/sdk/errors) |
+| `query()` | 🟠 | [两个入口](/sdk/query-and-client) |
+| `BrainaryClient` | 🟠 | [两个入口](/sdk/query-and-client) |
+| `Options`（`Options::builder()`） | 🟠 | [Options](/sdk/options) |
+| `#[tool]` / `FunctionTools` | 🟠 | [自定义工具](/sdk/tools) |
+| `Message` / `ContentBlock` | 🟠 | [消息模型](/sdk/messages) |
+| `InterruptHandle::interrupt()`（句柄） | 🟠 | [中断与护栏](/sdk/interrupt-and-guardrails) |
+| 内置工具目录（read_file/write_file/…，原生名） | 🟠 | [内置工具目录](/sdk/builtin-tools) |
+| `list_sessions()` / `rename_session()` 等 | 🟠 | [会话管理](/sdk/sessions) |
+| `CanUseTool` / `PermissionMode`（6 模）/ `allowed_tools` | 🟠 | [权限模型](/sdk/permissions) |
+| `hooks`（PreToolUse 等生命周期钩子） | 🟠 | [Hooks](/sdk/hooks) |
+| `BrainaryError` 枚举 + `ErrorCategory` | 🟠 | [错误处理](/sdk/errors) |
 | `Options.agents`（子 agent，SDK 一等面） | 🟠 | [Options](/sdk/options) · 构建 Agent |
 
-> 🟠 的行是**架构已规划、尚未实现**的占位页——它们与其余页并列，仅靠状态标记区分。为什么先写未实现的接口？因为它们是**架构上该有**的面，先落接口占位（含建议性 Rust 签名）便于后续对齐讨论；判断依据见 [边界与路线图](/sdk/limits) 的覆盖矩阵。
+> 全表接口均为 🟠【规划中，未完成】——架构已规划、尚未实现。先落接口占位（含建议性 Rust 签名）是因为它们是**架构上该有**的面，便于后续对齐讨论；判断依据见 [边界与路线图](/sdk/limits) 的覆盖矩阵。
 
 ## 两个入口
 
@@ -73,27 +77,20 @@ brainary-agent-sdk 的接口面按「Brainary-Code-like agent SDK」这一目标
 | 运行一个 PoA | `poa` feature + `PoaRunner` 库调用跑 `.poa` | [运行一个 PoA](/sdk/running-a-poa) |
 | 边界与限制 | v1 明确不做的项、受 llmy 限制的项 | [能力边界](/sdk/limits) |
 
-## v1 能力填充度
+## 能力填充度（规划） {#capability-fill}
 
-**状态图例（全站统一 4 态）**：
+**状态说明**：本 SDK 全部接口均为 🟠【规划中，未完成】——架构已规划、尚未实现；下方给出的类型、字段均为**已承诺的形态**，供对齐讨论，非占位草案。（⚪ = 暂缓 / 不纳入，非交付接口。）
 
-| 标记 | 含义 |
-| --- | --- |
-| 🟢 | 已实现、可用 |
-| 🟡 | 类型/旋钮已就位，待上游数据或能力填充（加法式，不破坏现有代码） |
-| 🟠 | 架构已规划、尚未实现（占位页，含建议性签名） |
-| ⚪ | 暂缓 / 仅登记路线图 |
+消息模型的**形状已规划建齐**（四类消息 × 四种内容块）。下表列出各字段的规划填充度（落地后按 llmy 上游能力逐步填充）：
 
-消息模型的**形状现在就建齐**（四类消息 × 四种内容块），但 v1 **只填 llmy 的 `StepResult` 能给的**，其余字段类型就位而不填充：
-
-| 类型 / 字段 | v1 | M5（llmy 上游后） |
+| 类型 / 字段 | 规划状态 | 上游补齐后 |
 | --- | --- | --- |
-| `AssistantMessage.content = [Text]` | 🟢 | — |
-| `AssistantMessage.requested_tools` | 🟢 粗信号（`did_tool_call`） | 由 `ToolUse` 块取代 |
-| `ContentBlock::ToolUse / ToolResult / Thinking` | 🟡 类型就位，不填充 | 🟢 填充 |
-| `SystemMessage(subtype="init")` | 🟢 每次运行发一条 | 其余子类型补齐 |
-| `ResultMessage.num_turns / approx_context_tokens / stop_reason` | 🟢 | — |
-| `ResultMessage.usage / total_cost_usd` | 🟡 恒 `None` | 🟢 真实值 |
+| `AssistantMessage.content = [Text]` | 🟠 | — |
+| `AssistantMessage.requested_tools` | 🟠 粗信号（`did_tool_call`） | 由 `ToolUse` 块取代 |
+| `ContentBlock::ToolUse / ToolResult / Thinking` | 🟠 类型就位（不填充） | 规划：填充 |
+| `SystemMessage(subtype="init")` | 🟠 每次运行发一条 | 其余子类型补齐 |
+| `ResultMessage.num_turns / approx_context_tokens / stop_reason` | 🟠 | — |
+| `ResultMessage.usage / total_cost_usd` | 🟠 恒 `None` | 规划：上游补齐后填真实值 |
 
 字段级说明见 [消息模型](/sdk/messages)，边界裁决见 [能力边界](/sdk/limits)。
 

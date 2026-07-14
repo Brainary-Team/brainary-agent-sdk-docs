@@ -7,14 +7,14 @@ outline: 2
 > **读完本页你能**：照抄四段**完整**程序,分别覆盖一次性任务、错误处理、有状态多轮、以及配合自定义工具。
 
 ::: warning 规划：Python 接口面(镜像 Rust)
-下方代码为设计形态、尚未实现,见 [总览](/sdk-py/overview) 的规划横幅。Rust 侧已实现的等价物见 [Rust：示例用法](/sdk/examples)。
+下方代码为设计形态、尚未实现,见 [总览](/sdk-py/overview) 的规划横幅。Rust 侧对应页见 [Rust：示例用法](/sdk/examples)。
 :::
 
 这四段是把前面各页的概念**拼成整段程序**的样板。每段都写在异步上下文里(用 `asyncio.run(main())` 驱动),概念细节在每段末尾给出去处。
 
 ## 基础文件操作:内置工具(用 query)
 
-开箱启用内置工具套件,给一个文件任务,让 agent **自行调用**内置文件工具(`read_file` / `write_file` …)。要点先说清:内置工具是**模型在 agent 循环里调用**的,你不直接调它们——你的动作是「**启用 + 授权 + 给会触发它们的 prompt**」这三件事。文件这一组底层由 `FolderPrimitive` 提供(🟢);完整目录与 schema 见 [内置工具目录](/sdk-py/builtin-tools),工具也可来自自定义 [`@tool`](/sdk-py/tools) 或 MCP。
+开箱启用内置工具套件,给一个文件任务,让 agent **自行调用**内置文件工具(`read_file` / `write_file` …)。要点先说清:内置工具是**模型在 agent 循环里调用**的,你不直接调它们——你的动作是「**启用 + 授权 + 给会触发它们的 prompt**」这三件事。文件这一组底层由 `FolderPrimitive` 提供(🟠);完整目录与 schema 见 [内置工具目录](/sdk-py/builtin-tools),工具也可来自自定义 [`@tool`](/sdk-py/tools) 或 MCP。
 
 ```python
 import asyncio
@@ -25,7 +25,7 @@ async def main():
     # 一键装上后,模型在 agent 循环里【自行调用】它们(你不直接调)。
     options = Options(
         model=Options.model_from_env(),
-        enable_default_tools=True,                    # 工具预设;文件工具由 FolderPrimitive 提供(🟢)
+        enable_default_tools=True,                    # 工具预设;文件工具由 FolderPrimitive 提供(🟠)
         allowed_tools=["read_file", "write_file"],    # 这两个免确认放行;其余落到 permission_mode / can_use_tool
     )
 
@@ -38,7 +38,7 @@ async def main():
                     print(block.text)
         elif isinstance(msg, ResultMessage):
             print("停机原因:", msg.stop_reason)
-    # 注:模型实际发起的 ToolUseBlock / ToolResultBlock 类型已就位、暂不透出(🟡),
+    # 注:模型实际发起的 ToolUseBlock / ToolResultBlock 类型已就位、暂不透出(🟠),
     # 故这里读到的是最终文本结论;逐次工具调用的观察待 M5。
 
 asyncio.run(main())

@@ -14,8 +14,8 @@ outline: 2
 
 | 能力 | 是什么 | 状态 | 在哪 |
 | --- | --- | --- | --- |
-| **进程内 resume** | 同一个 client 活着期间多轮上下文自动累积 | 🟢 | [两个入口](/sdk-py/query-and-client) |
-| **transcript 导出** | 把当前会话导成可序列化只读快照（**只导出、不可续跑**） | 🟢 | `client.export_transcript()` |
+| **进程内 resume** | 同一个 client 活着期间多轮上下文自动累积 | 🟠 | [两个入口](/sdk-py/query-and-client) |
+| **transcript 导出** | 把当前会话导成可序列化只读快照（**只导出、不可续跑**） | 🟠 | `client.export_transcript()` |
 | **跨进程 session 管理** | 把多份历史会话持久化、list / 查看 / 重命名 / 打标签 / 载回续跑 | 🟠 未实现 | 本页 |
 
 > **session 管理 ≠ resume**，是两件事——只是都压在「跨进程持久化」这一未做的底座上。
@@ -199,16 +199,16 @@ async with BrainaryClient(options) as client:
 
 ## resume 家族：三种续跑
 
-会话管理的另一半是「载回续跑」。Brainary 规划三个 resume 入口（前两者的**进程内**形态已 🟢，跨进程形态 🟠），作为 [Options](/sdk-py/options) 上的装配旋钮：
+会话管理的另一半是「载回续跑」。Brainary 规划三个 resume 入口（前两者的**进程内**形态已 🟠，跨进程形态 🟠），作为 [Options](/sdk-py/options) 上的装配旋钮：
 
 | 入口 | 语义 | 状态 |
 | --- | --- | --- |
 | `continue_conversation` | 续**最近一份**会话（不必给 id） | 🟠 跨进程 |
-| `resume(session_id)` | 按 **session id** 续某份具体会话 | 🟢 进程内 resume 已实现 / 🟠 跨进程载回 |
+| `resume(session_id)` | 按 **session id** 续某份具体会话 | 🟠 进程内 resume（规划中）/ 跨进程载回（规划中） |
 | `fork_session` | resume 时**分叉**到一个新 session id，原会话不动 | 🟠 |
 
 ```python
-# ⚠️ 跨进程形态未实现（🟠）；进程内 resume 已 🟢（见 /sdk-py/query-and-client）。
+# ⚠️ 跨进程形态未实现（🟠）；进程内 resume 已 🟠（见 /sdk-py/query-and-client）。
 options = Options(
     model=Options.model_from_env(),
     continue_conversation=True,   # 续最近一份历史会话
@@ -218,7 +218,7 @@ options = Options(
 )
 ```
 
-- **进程内 resume 已实现**：同一个 `BrainaryClient` 活着期间多轮上下文自动累积，无需 id。
+- **进程内 resume（规划中）**：同一个 `BrainaryClient` 活着期间多轮上下文自动累积，无需 id。
 - **跨进程 resume 未实现**：把磁盘上一份历史会话载回成能继续跑的 agent，卡在下面「依赖的底座」的 transcript resume 上。
 - **`fork_session`** 用于「从某历史会话分叉出一条新支线」：以它为起点续跑，但落到一个**新** session id，原会话保持只读不变。
 
@@ -248,7 +248,7 @@ async with BrainaryClient(options) as client:
 
 | 能力 | 粒度 | 恢复什么 | 状态 |
 | --- | --- | --- | --- |
-| `revert()` | **步级** | 撤掉最近一步对话（会话状态回退一步） | 🟢 已实现 |
+| `revert()` | **步级** | 撤掉最近一步对话（会话状态回退一步） | 🟠 规划中 |
 | `rewind_files(message_id)` | **文件级** | 把磁盘上的文件回滚到某条用户消息时的快照 | 🟠 未实现 |
 
 ```python
@@ -275,6 +275,6 @@ async with BrainaryClient(options) as client:
 
 ## 相关
 
-- [两个入口：BrainaryClient](/sdk-py/query-and-client) —— 进程内 resume（🟢）、`get_server_info` 与运行时控制
+- [两个入口：BrainaryClient](/sdk-py/query-and-client) —— 进程内 resume（🟠）、`get_server_info` 与运行时控制
 - [权限模型](/sdk-py/permissions) 🟠 · [边界与路线图](/sdk-py/limits)
 - 对照 Rust：[会话管理](/sdk/sessions)

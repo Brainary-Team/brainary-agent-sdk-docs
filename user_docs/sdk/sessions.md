@@ -16,8 +16,8 @@ outline: 2
 
 | 能力 | 是什么 | v1 状态 | 在哪 |
 | --- | --- | --- | --- |
-| **进程内 resume** | 同一个 `BrainaryClient` 活着期间，多轮对话上下文自动累积 | 🟢 已实现 | [两个入口](/sdk/query-and-client) |
-| **transcript 导出** | 把当前会话导成可序列化的只读快照（**只导出、不可续跑**） | 🟢 已实现 | [会话导出](/sdk/transcript) |
+| **进程内 resume** | 同一个 `BrainaryClient` 活着期间，多轮对话上下文自动累积 | 🟠 规划中 | [两个入口](/sdk/query-and-client) |
+| **transcript 导出** | 把当前会话导成可序列化的只读快照（**只导出、不可续跑**） | 🟠 规划中 | [会话导出](/sdk/transcript) |
 | **跨进程 session 管理** | 把**多份历史会话**持久化到磁盘，之后 list / 查看 / 重命名 / 打标签 / 载回续跑 | 🟠 未实现 | 本页 |
 
 > 关键：**session 管理 ≠ resume**，是两件事——只是都压在「跨进程持久化」这一未做的底座上。这里的 session 指**磁盘持久化的历史会话**（`session_id` + 会话文件，支持列举、重命名、打标签、管理多份历史）；Brainary v1 两层都没有。
@@ -135,18 +135,18 @@ pub struct SessionInfo {
 
 ## resume 家族：三种续跑
 
-会话管理的另一半是「载回续跑」。Brainary 规划三个入口（前两者的**进程内**形态已 🟢，跨进程形态 🟠）：
+会话管理的另一半是「载回续跑」。Brainary 规划三个入口（前两者的**进程内**形态已 🟠，跨进程形态 🟠）：
 
 | 入口 | 语义 | 状态 |
 | --- | --- | --- |
 | `continue_conversation` | 续**最近一份**会话（不必给 id） | 🟠 跨进程 |
-| `resume(session_id)` | 按 **session id** 续某份具体会话 | 🟢 进程内 resume 已实现 / 🟠 跨进程载回 |
+| `resume(session_id)` | 按 **session id** 续某份具体会话 | 🟠 进程内 resume（规划中）/ 跨进程载回（规划中） |
 | `fork_session` | resume 时**分叉**到一个新 session id，原会话不动 | 🟠 |
 
 这三者作为 [Options](/sdk/options) 上的装配旋钮承诺（跨进程形态待底层持久化就位）：
 
 ```rust
-// ⚠️ 跨进程形态 v1 未实现（🟠）；进程内 resume 已 🟢（见 /sdk/query-and-client）。
+// ⚠️ 跨进程形态 v1 未实现（🟠）；进程内 resume 已 🟠（见 /sdk/query-and-client）。
 Options::builder()
     .continue_conversation(true)          // 续最近一份历史会话
     // 或：
@@ -155,7 +155,7 @@ Options::builder()
     .build()?;
 ```
 
-- **进程内 resume 已实现**：同一个 `BrainaryClient` 活着期间多轮上下文自动累积，无需 id（见 [两个入口](/sdk/query-and-client)）。
+- **进程内 resume（规划中）**：同一个 `BrainaryClient` 活着期间多轮上下文自动累积，无需 id（见 [两个入口](/sdk/query-and-client)）。
 - **跨进程 resume 未实现**：把磁盘上一份历史会话载回成能继续跑的 agent，卡在下面「依赖的底座」的 transcript resume 上。
 - **`fork_session`** 用于「从某历史会话分叉出一条新支线」：以它为起点续跑，但落到一个**新** session id，原会话保持只读不变。
 
@@ -183,7 +183,7 @@ impl BrainaryClient {
 
 | 能力 | 粒度 | 恢复什么 | 状态 |
 | --- | --- | --- | --- |
-| `revert()` | **步级** | 撤掉最近一步对话（会话状态回退一步） | 🟢 已实现 |
+| `revert()` | **步级** | 撤掉最近一步对话（会话状态回退一步） | 🟠 规划中 |
 | `rewind_files(message_id)` | **文件级** | 把磁盘上的文件回滚到某条用户消息时的快照 | 🟠 未实现 |
 
 ```rust
@@ -207,7 +207,7 @@ impl BrainaryClient {
 
 ## 相关
 
-- [两个入口：BrainaryClient](/sdk/query-and-client) —— 进程内 resume（🟢 已实现）、`get_server_info` 与运行时控制
+- [两个入口：BrainaryClient](/sdk/query-and-client) —— 进程内 resume（🟠 规划中）、`get_server_info` 与运行时控制
 - [会话导出 transcript](/sdk/transcript) —— 只读快照，只导出不续跑
 - [权限模型](/sdk/permissions) —— 另一个架构已规划、未实现的面
 - [边界与路线图](/sdk/limits) —— 覆盖矩阵与里程碑

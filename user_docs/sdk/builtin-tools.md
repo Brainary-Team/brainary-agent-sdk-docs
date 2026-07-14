@@ -6,11 +6,11 @@ outline: 2
 
 > **读完本页你能**：一眼看清 Brainary SDK **开箱自带**的模型可调用工具全集——每个工具的原生名、输入/输出 schema 与落地状态，并知道它与「写自定义工具」「底层 primitive」两条邻线的分工。
 
-**状态图例（全站统一 4 态）**：🟢 已实现 · 🟡 类型/旋钮就位待上游 · 🟠 架构已规划未实现 · ⚪ 暂缓/仅登记
+**状态说明**：brainary-agent-sdk 当前**全部接口均为 🟠【规划中，未完成】**——架构已规划、尚未实现；下方给出的类型、签名、字段均为**已承诺的形态**，供对齐讨论，非占位草案。（⚪ = 暂缓 / 不纳入，非交付接口。）
 
 ## 这一页在讲什么
 
-本页是 **SDK 对模型暴露的内置工具目录**——一个 agent **零自定义代码**即可调用的那批工具。一个编码智能体 SDK 的核心，很大程度上就是由**它开箱自带这份目录**来定义的：不用你写一行工具代码，模型就已经能读写文件、跑命令、搜网、拉起子 agent、维护任务清单。
+本页是 **SDK 对模型暴露的内置工具目录**——一个 agent **零自定义代码**即可调用的那批工具。一个编码智能体 SDK 的核心，很大程度上就是由**它开箱自带这份目录**来定义的：规划目标是不用你写一行工具代码，模型即可读写文件、跑命令、搜网、拉起子 agent、维护任务清单（当前均为规划形态、尚未实现）。
 
 它和左右两条邻线的分工要分清：
 
@@ -32,12 +32,12 @@ outline: 2
 
 | Brainary 原生名 | 状态 | 分组 |
 | --- | --- | --- |
-| `read_file` | 🟢 / 精化 🟠 | 文件 |
-| `write_file` | 🟢 | 文件 |
-| `edit_file` | 🟢 | 文件 |
-| `find_file` | 🟢 / 精化 🟠 | 文件 |
-| `grep` | 🟢 / 精化 🟠 | 文件 |
-| `delete_file` | 🟢 | 文件 |
+| `read_file` | 🟠 | 文件 |
+| `write_file` | 🟠 | 文件 |
+| `edit_file` | 🟠 | 文件 |
+| `find_file` | 🟠 | 文件 |
+| `grep` | 🟠 | 文件 |
+| `delete_file` | 🟠 | 文件 |
 | `bash` | 🟠 | Shell/命令 |
 | `bash_output` | 🟠 | Shell/命令 |
 | `kill_bash` | 🟠 | Shell/命令 |
@@ -59,9 +59,9 @@ outline: 2
 
 ## 文件
 
-模型对文件系统的六件套。**这一组底层已由 `FolderPrimitive` 实现**——它把 `llmy` 现成的文件工具锁进一个沙箱根目录装配，因此 `read_file` / `write_file` / `edit_file` / `find_file` / `grep` / `delete_file` **均已 🟢 可用**。但要补齐完整 schema，还有几处**精化缺口（🟠）**需要补，逐一在下方标出。
+模型对文件系统的六件套。**这一组底层规划由 `FolderPrimitive` 装配**——把 `llmy` 现成的文件工具锁进一个沙箱根目录，因此 `read_file` / `write_file` / `edit_file` / `find_file` / `grep` / `delete_file` **均属 🟠【规划中，未完成】**。完整 schema 另有几处**精化缺口（🟠）**待补，逐一在下方标出。
 
-### `read_file`｜🟢，schema 精化 🟠
+### `read_file`｜🟠（schema 精化缺口）
 
 **用途**：读取单个文件内容（回填给模型）。
 
@@ -87,7 +87,7 @@ struct ReadFileOutput {
 
 **精化缺口（🟠）**：现有 `read_file` **缺 `offset`/`limit` 分页**、也**缺图像文件的 base64 输出分支**，两者都需补齐。
 
-### `write_file`｜🟢
+### `write_file`｜🟠
 
 **用途**：整份写入/覆盖一个文件。
 
@@ -106,7 +106,7 @@ struct WriteFileOutput {
 }
 ```
 
-### `edit_file`｜🟢
+### `edit_file`｜🟠
 
 **用途**：对文件做精确的字符串局部替换。
 
@@ -129,7 +129,7 @@ struct EditFileOutput {
 }
 ```
 
-### `find_file`｜🟢，schema 精化 🟠
+### `find_file`｜🟠（schema 精化缺口）
 
 **用途**：按名查找文件。
 
@@ -150,7 +150,7 @@ struct FindFileOutput {
 
 **精化缺口（🟠）**：现有 `find_file` 是**文件名匹配**，目标形态是**通配（glob）匹配**（如 `src/**/*.rs`）。需把匹配语义从「按名」升级为「按 glob 模式」。
 
-### `grep`｜🟢，schema 精化 🟠
+### `grep`｜🟠（schema 精化缺口）
 
 **用途**：按正则在文件内容里搜索。
 
@@ -193,7 +193,7 @@ struct GrepContentOutput {
 
 **精化缺口（🟠）**：现有 `grep` 大体只做「正则 + 路径 → 命中」，**缺 `output_mode`（内容/文件名/计数三态）、上下文行（`-A/-B/-C`）、`type`/`glob` 过滤**等旋钮。这些是作为主力检索工具的关键能力，需逐项补齐。
 
-### `delete_file`｜🟢
+### `delete_file`｜🟠
 
 **用途**：删除沙箱内的一个文件。删除也可经 `bash` 完成，但 `FolderPrimitive` 已把它作为独立工具提供。
 

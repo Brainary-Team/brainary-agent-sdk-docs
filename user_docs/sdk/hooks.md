@@ -6,7 +6,7 @@ outline: 2
 
 > **读完本页你能**：理解 hooks 是**包裹 agent 循环的确定性、代码驱动治理层**——在固定生命周期点触发，可观察 / 改写 / 拦截；掌握 Brainary 目标规格里的 `HookEvent` / `HookMatcher` / `HookCallback` / `HookContext` / `HookInput` / `HookJSONOutput` 六件套的建议性 Rust 签名；看懂 `PreToolUse` 的 `permissionDecision` 与逐次授权回调 `CanUseTool` 如何组成「权限桥」。
 
-**状态图例（全站统一 4 态）**：🟢 已实现 · 🟡 类型/旋钮就位待上游 · 🟠 架构已规划未实现 · ⚪ 暂缓/仅登记
+**状态说明**：brainary-agent-sdk 当前**全部接口均为 🟠【规划中，未完成】**——架构已规划、尚未实现；下方给出的类型、签名、字段均为**已承诺的形态**，供对齐讨论，非占位草案。（⚪ = 暂缓 / 不纳入，非交付接口。）
 
 ::: warning 整个 Hooks 子系统为「架构已规划、尚未实现」（🟠）
 下面的类型与签名是**目标规格**：定义「一个编码智能体 SDK 的钩子面 *应当* 长什么样」，用来牵引仍在演进的底层架构。它们**不是**当前实现的映射，当前 v1 的 `Options` 里没有 `hooks`。签名均为**已承诺的形状**（committed signatures），供与底层对齐时定稿——不是「签名待定」。北极星见 [SDK 总览](/sdk/overview)。

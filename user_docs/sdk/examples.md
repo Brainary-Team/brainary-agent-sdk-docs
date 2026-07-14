@@ -4,15 +4,15 @@ outline: 2
 
 # 示例用法
 
-> **读完本页你能**：照抄四段**完整可运行**的程序,分别覆盖一次性任务、错误处理、有状态多轮、以及配合自定义工具。
+> **读完本页你能**：照抄四段**完整**示例程序（规划形态，接口落地后可运行）,分别覆盖一次性任务、错误处理、有状态多轮、以及配合自定义工具。
 
-这四段是把前面各页的概念**拼成整段程序**的样板。每段都能独立跑,只需先备好环境变量(见 快速上手);概念细节在每段末尾给出去处。
+这四段是把前面各页的概念**拼成整段程序**的样板。每段规划为可独立运行（接口落地后）,届时只需先备好环境变量(见 快速上手);概念细节在每段末尾给出去处。
 
 > 下面的片段都写在某个 `async fn` 体内(省略了外层 `#[tokio::main]` / 函数包装)。
 
 ## 基础文件操作:内置工具(用 query)
 
-**基础文件操作**:开箱启用内置工具套件,给一个文件任务,让 agent **自行调用**内置文件工具(`read_file` / `write_file` …)。要点先说清:内置工具是**模型在 agent 循环里调用**的,你不直接调它们——你的动作是「**启用 + 授权 + 给会触发它们的 prompt**」这三件事。文件这一组底层由 `FolderPrimitive` 提供(🟢);完整目录与 schema 见 [内置工具目录](/sdk/builtin-tools),工具也可来自自定义 [`FunctionTools`](/sdk/tools) 或 MCP。
+**基础文件操作**:开箱启用内置工具套件,给一个文件任务,让 agent **自行调用**内置文件工具(`read_file` / `write_file` …)。要点先说清:内置工具是**模型在 agent 循环里调用**的,你不直接调它们——你的动作是「**启用 + 授权 + 给会触发它们的 prompt**」这三件事。文件这一组底层由 `FolderPrimitive` 提供(🟠);完整目录与 schema 见 [内置工具目录](/sdk/builtin-tools),工具也可来自自定义 [`FunctionTools`](/sdk/tools) 或 MCP。
 
 ```rust
 use brainary_agent_sdk::{query, Message, ModelSelection, Options};
@@ -22,7 +22,7 @@ use futures::StreamExt;
 //    一键装上后,模型在 agent 循环里【自行调用】它们(你不直接调)。
 let options = Options::builder()
     .model(ModelSelection::from_env()?)
-    .enable_default_tools(true)                     // 一键装上标准内置工具套件;文件工具由 FolderPrimitive 提供(🟢)
+    .enable_default_tools(true)                     // 一键装上标准内置工具套件;文件工具由 FolderPrimitive 提供(🟠)
     .allowed_tools(["read_file", "write_file"].map(String::from))  // 这两个免确认放行;其余落到 permission_mode / can_use_tool
     .build()?;
 
@@ -30,7 +30,7 @@ let options = Options::builder()
 let mut stream = query("读取 ./notes.md,把要点浓缩成三行,写回 ./summary.md。", options).await?;
 
 // 3) 逐条消费:v1 只回填 Text 块;模型实际发起的 ToolUse/ToolResult 块
-//    类型已就位、暂不透出(🟡),故这里读到的是最终文本结论
+//    类型已就位、暂不透出(🟠),故这里读到的是最终文本结论
 while let Some(item) = stream.next().await {
     match item? {
         Message::Assistant(a) => println!("assistant: {a:?}"),

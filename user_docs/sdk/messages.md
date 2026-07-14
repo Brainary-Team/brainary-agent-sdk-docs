@@ -8,7 +8,7 @@ outline: 2
 
 SDK 的消息模型是一个 `Message` union。**形状现在就建齐**（四类消息 × 四种内容块），但 v1 **只填 llmy 的 `StepResult` 能给的**，其余字段类型就位而不填充，待 llmy 上游填充。
 
-**状态图例（全站统一 4 态）**：🟢 已实现 · 🟡 类型/旋钮就位待上游 · 🟠 架构已规划未实现 · ⚪ 暂缓/仅登记。
+**状态说明**：brainary-agent-sdk 当前**全部接口均为 🟠【规划中，未完成】**——架构已规划、尚未实现；下方给出的类型、签名、字段均为**已承诺的形态**，供对齐讨论，非占位草案。（⚪ = 暂缓 / 不纳入，非交付接口。）
 
 ## 一条流长什么样
 
@@ -49,13 +49,13 @@ while let Some(item) = stream.next().await {
 字段（核对 `message.rs`）：
 
 - `AssistantMessage { content: Vec<ContentBlock>, requested_tools: bool, model: Option<String>, error: Option<AssistantMessageError> }`
-- `UserMessage { content: Vec<ContentBlock> }`（🟡 未来加 `parent_tool_use_id: Option<String>` / `tool_use_result: Option<...>`，见[下文](#usermessage-未来字段)）
+- `UserMessage { content: Vec<ContentBlock> }`（🟠 未来加 `parent_tool_use_id: Option<String>` / `tool_use_result: Option<...>`，见[下文](#usermessage-未来字段)）
 - `SystemMessage { subtype: String, data: serde_json::Value }`（`init` 的 `data` 携带 `{ "model": ... }`）
 - `ResultMessage { num_turns: usize, approx_context_tokens: Option<usize>, stop_reason: StopReason, usage: Option<Usage>, total_cost_usd: Option<f64>, is_error: bool, .. }`（追加字段见[下文](#resultmessage-追加字段)）
 
 ### AssistantMessage.error：结构化的单步失败类别 {#assistant-message-error}
 
-`AssistantMessage.error: Option<AssistantMessageError>`（🟡 类型就位待上游）给「这一步为什么失败」一个**可 `match` 的类别**，让你不必去 `Err` 的错误字符串里做子串匹配。它是一个 `#[non_exhaustive]` 枚举：
+`AssistantMessage.error: Option<AssistantMessageError>`（🟠 类型就位待上游）给「这一步为什么失败」一个**可 `match` 的类别**，让你不必去 `Err` 的错误字符串里做子串匹配。它是一个 `#[non_exhaustive]` 枚举：
 
 ```rust
 #[non_exhaustive]
@@ -96,25 +96,25 @@ Message::Assistant(a) => {
 
 | 变体 | 字段 | v1 |
 | --- | --- | --- |
-| `Text` | `TextBlock { text: String }` | 🟢 |
-| `ToolUse` | `ToolUseBlock { id: Option<String>, name: Option<String>, input: Value }` | 🟡 不填充 |
-| `ToolResult` | `ToolResultBlock { tool_use_id, content: Option<String>, is_error: bool }` | 🟡 不填充 |
-| `Thinking` | `ThinkingBlock { thinking: String, signature: Option<String> }` | 🟡 不填充（llmy `StepResult` 无 thinking 流） |
+| `Text` | `TextBlock { text: String }` | 🟠 |
+| `ToolUse` | `ToolUseBlock { id: Option<String>, name: Option<String>, input: Value }` | 🟠 不填充 |
+| `ToolResult` | `ToolResultBlock { tool_use_id, content: Option<String>, is_error: bool }` | 🟠 不填充 |
+| `Thinking` | `ThinkingBlock { thinking: String, signature: Option<String> }` | 🟠 不填充（llmy `StepResult` 无 thinking 流） |
 
 ## 字段填充度
 
-| 字段 | v1 | 待 llmy 上游（原 M5） |
+| 字段 | 规划状态 | 上游补齐后 |
 | --- | --- | --- |
-| `AssistantMessage.content = [Text]` | 🟢 真实 | — |
-| `AssistantMessage.requested_tools` | 🟢 粗信号（llmy `did_tool_call()`） | 由 `ToolUse` 块取代 |
-| `AssistantMessage.model` | 🟢 配置的模型名 | — |
-| `ContentBlock::ToolUse / ToolResult / Thinking` | 🟡 类型就位，不填充 | 🟢 填充 |
-| `ResultMessage.num_turns / approx_context_tokens / stop_reason` | 🟢 真实 | — |
-| `ResultMessage.usage / total_cost_usd` | 🟡 恒 `None` | 🟢 真实值 |
-| `AssistantMessage.error` | 🟡 类型就位，不填充 | 🟢 填结构化失败类别 |
-| `ResultMessage.is_error` | 🟢 v1 恒 `false`（判失败改用 [`error`](#assistant-message-error)） | — |
-| `ResultMessage.session_id / permission_denials` | 🟠 依赖会话面/权限面，恒 `None` | 🟢 真实值 |
-| `ResultMessage.duration_ms / api_error_status / errors` | 🟡 类型就位待上游 | 🟢 真实值 |
+| `AssistantMessage.content = [Text]` | 🟠 规划填充文本 | — |
+| `AssistantMessage.requested_tools` | 🟠 粗信号（llmy `did_tool_call()`） | 由 `ToolUse` 块取代 |
+| `AssistantMessage.model` | 🟠 配置的模型名 | — |
+| `ContentBlock::ToolUse / ToolResult / Thinking` | 🟠 类型就位，不填充 | 规划：填充 |
+| `ResultMessage.num_turns / approx_context_tokens / stop_reason` | 🟠 规划填充 | — |
+| `ResultMessage.usage / total_cost_usd` | 🟠 恒 `None` | 规划：真实值 |
+| `AssistantMessage.error` | 🟠 类型就位，不填充 | 规划：填结构化失败类别 |
+| `ResultMessage.is_error` | 🟠 规划恒 `false`（判失败改用 [`error`](#assistant-message-error)） | — |
+| `ResultMessage.session_id / permission_denials` | 🟠 依赖会话面/权限面，恒 `None` | 规划：真实值 |
+| `ResultMessage.duration_ms / api_error_status / errors` | 🟠 类型就位待上游 | 规划：真实值 |
 
 ## 成本：`total_cost_usd` 与 `usage` {#cost}
 
@@ -122,8 +122,8 @@ Message::Assistant(a) => {
 
 | 字段 | 类型 | v1 | 上游后 |
 | --- | --- | --- | --- |
-| `ResultMessage.total_cost_usd` | `Option<f64>` | 🟡 恒 `None` | 🟢 真实花费（美元） |
-| `ResultMessage.usage` | `Option<Usage>` | 🟡 恒 `None` | 🟢 真实 token 计量 |
+| `ResultMessage.total_cost_usd` | `Option<f64>` | 🟠 恒 `None` | 🟠 真实花费（美元） |
+| `ResultMessage.usage` | `Option<Usage>` | 🟠 恒 `None` | 🟠 真实 token 计量 |
 
 `Usage` 是 token 计量，字段类型就位、值待 llmy 上游：
 
@@ -137,9 +137,9 @@ pub struct Usage {
 }
 ```
 
-所以 v1 里读 `r.total_cost_usd` 总是 `None`——**不是 bug，是数据待 llmy 上游透出**。你的代码现在就能写 `if let Some(cost) = r.total_cost_usd { … }`，上游补齐后无需改动即可拿到真实值（`#[non_exhaustive]` 保证加法式填充不破坏调用方）。
+规划上，`r.total_cost_usd` 在落地初期恒为 `None`——**不是 bug，是数据待 llmy 上游透出**。调用方代码可照 `if let Some(cost) = r.total_cost_usd { … }` 写，上游补齐后无需改动即可拿到真实值（`#[non_exhaustive]` 保证加法式填充不破坏调用方）。
 
-> 成本的**配置侧**是 `Options.billing_cap`（预算上限，v1 已生效），见 [Options](/sdk/options#builder-方法逐项)。配置项进 `Options`、结果字段进 `ResultMessage`。
+> 成本的**配置侧**是 `Options.billing_cap`（预算上限，规划中），见 [Options](/sdk/options#builder-方法逐项)。配置项进 `Options`、结果字段进 `ResultMessage`。
 
 ## ResultMessage 追加字段（登记规划） {#resultmessage-追加字段}
 
@@ -148,10 +148,10 @@ pub struct Usage {
 | 字段 | 类型 | 状态 | 说明 |
 | --- | --- | --- | --- |
 | `session_id` | `Option<String>` | 🟠 依赖会话面 | 会话面的 join key：把本次运行的 `Result` 关联回一个会话/transcript。会话面落地前恒 `None`。 |
-| `duration_ms` | `Option<u64>` | 🟡 类型就位待上游 | 本次运行的墙钟耗时（毫秒）。 |
-| `api_error_status` | `Option<u16>` | 🟡 配合 error 分类 | 终止性 API 错误的 HTTP 状态码；与 [`AssistantMessageError`](#assistant-message-error) 配套，让你既知类别又知状态码。无终止错误时 `None`。 |
+| `duration_ms` | `Option<u64>` | 🟠 类型就位待上游 | 本次运行的墙钟耗时（毫秒）。 |
+| `api_error_status` | `Option<u16>` | 🟠 配合 error 分类 | 终止性 API 错误的 HTTP 状态码；与 [`AssistantMessageError`](#assistant-message-error) 配套，让你既知类别又知状态码。无终止错误时 `None`。 |
 | `permission_denials` | `Option<Vec<PermissionDenial>>` | 🟠 依赖权限面 | 本次运行被权限面拒绝的工具调用记录。权限面落地前恒 `None`。 |
-| `errors` | `Option<Vec<String>>` | 🟡 类型就位待上游 | 循环级错误字符串（如 max-turns 提示），用于诊断而非分支。 |
+| `errors` | `Option<Vec<String>>` | 🟠 类型就位待上游 | 循环级错误字符串（如 max-turns 提示），用于诊断而非分支。 |
 
 `is_error` 的语义不变——v1 **恒 `false`**；要判断「这一步/这次为何失败」，请用结构化的 [`AssistantMessageError`](#assistant-message-error)（步级类别）与 `api_error_status`（HTTP 状态码），而非 `is_error` 布尔。
 
@@ -202,7 +202,7 @@ pub enum RateLimitType {
 
 ## UserMessage 未来字段 {#usermessage-未来字段}
 
-`UserMessage` 当前只有 `content`。待 subagent（子代理）与工具结果回填落地后，追加两个字段（🟡 类型就位、v1 不填充）：
+`UserMessage` 当前只有 `content`。待 subagent（子代理）与工具结果回填落地后，追加两个字段（🟠 类型就位、v1 不填充）：
 
 | 字段 | 类型 | 用途 |
 | --- | --- | --- |

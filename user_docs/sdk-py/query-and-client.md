@@ -7,7 +7,7 @@ outline: 2
 > **读完本页你能**：分清一次性 `query()` 与有状态 `BrainaryClient` 的语义，会用 `async for` 消费消息流、用 `async with` 管理 client 生命周期，并知道中断与只读检视方法怎么用。
 
 ::: warning 规划：Python 接口面（镜像 Rust）
-下方签名为设计形态、尚未实现，见 [总览](/sdk-py/overview) 的规划横幅。Rust 侧已实现的等价物见 [Rust：两个入口](/sdk/query-and-client)。
+下方签名为设计形态、尚未实现，见 [总览](/sdk-py/overview) 的规划横幅。Rust 侧对应页见 [Rust：两个入口](/sdk/query-and-client)。
 :::
 
 SDK 只有两个入口，共用同一套 [Options](/sdk-py/options) 和同一条异步 [Message 流](/sdk-py/messages)。区别只有一句话：**agent 归谁持有、上下文是否跨调用累积。**
@@ -56,7 +56,7 @@ def query(
 
 | 参数 | 类型 | 默认 | 说明 |
 | --- | --- | --- | --- |
-| `prompt` | `str \| AsyncIterable[dict]` | 必填 | 一次性输入：字符串（🟢）或**流式输入**的异步可迭代对象（🟠，见[下文](#流式输入)） |
+| `prompt` | `str \| AsyncIterable[dict]` | 必填 | 一次性输入：字符串（🟠）或**流式输入**的异步可迭代对象（🟠，见[下文](#流式输入)） |
 | `options` | `Options \| None` | `None` | 配置对象；缺省时用 `Options()`（但 `model` 必填，见 [Options](/sdk-py/options)） |
 
 **返回**：`AsyncIterator[Message]`——异步消息流，用 `async for` 逐条消费（无需 `await`）。
@@ -110,7 +110,7 @@ async with BrainaryClient(options) as client:
 ## 流式输入（str 之外）{#流式输入}
 
 ::: warning 架构已规划、尚未实现（🟠）
-字符串 `prompt` 是 🟢；把**异步可迭代对象**当 `prompt` 的**流式输入**形态已承诺、v1 未实现。
+字符串 `prompt` 是 🟠；把**异步可迭代对象**当 `prompt` 的**流式输入**形态已承诺、v1 未实现。
 :::
 
 除了「一次给一个字符串」，`prompt` 还可接一个 **`AsyncIterable[dict]`**——**边生成边喂**：每 `yield` 一条用户消息 dict，agent 就多收一段输入（streaming-input 模式，`query(prompt=<async iterable>)`）。适合「输入本身是流」的场景：语音转写逐句到达、上游 agent 边算边产出、人在环边打字边送。
@@ -141,7 +141,7 @@ class BrainaryClient:
     async def __aenter__(self) -> "BrainaryClient": ...    # async with 进入：建立并持有 agent
     async def __aexit__(self, *exc) -> None: ...           # 退出：释放 agent 与活资源
 
-    async def query(self, prompt: str | AsyncIterable[dict]) -> None: ...  # 送入一轮（str🟢 / 流式输入🟠）
+    async def query(self, prompt: str | AsyncIterable[dict]) -> None: ...  # 送入一轮（str🟠 / 流式输入🟠）
     def receive_response(self) -> AsyncIterator[Message]: ...  # 迭代本轮回复直到 ResultMessage
     async def interrupt(self) -> None: ...                 # 请求步间中断
 

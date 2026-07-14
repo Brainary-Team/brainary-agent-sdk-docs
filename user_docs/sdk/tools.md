@@ -117,8 +117,8 @@ serde_json = "1"                   # 构造 variables / 参数
 
 | 能力 | Brainary v1 | 状态 |
 | --- | --- | --- |
-| 挂载一个 MCP server | `Options::builder().mcp_server(url)`（糖，可多次调用累加） | 🟢 |
-| 富配置（Stdio / SSE / Http 传输、鉴权头等） | 目前糖只收 URL 字符串 | 🟡 待扩 |
+| 挂载一个 MCP server | `Options::builder().mcp_server(url)`（糖，可多次调用累加） | 🟠 |
+| 富配置（Stdio / SSE / Http 传输、鉴权头等） | 目前糖只收 URL 字符串 | 🟠 待扩 |
 | 运行时控制（`get_mcp_status` / `reconnect` / `toggle`） | — | 🟠 未实现 |
 
 v1 里最小接法就是一行糖：

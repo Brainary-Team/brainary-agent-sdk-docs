@@ -53,7 +53,7 @@ class AssistantMessage:
 @dataclass
 class UserMessage:
     content: list[ContentBlock]
-    # 🟡 未来加 parent_tool_use_id / tool_use_result，见「UserMessage 未来字段」
+    # 🟠 未来加 parent_tool_use_id / tool_use_result，见「UserMessage 未来字段」
 
 @dataclass
 class SystemMessage:
@@ -65,8 +65,8 @@ class ResultMessage:
     num_turns: int                                 # 本次运行累计步数
     stop_reason: str                               # 为何停机，见「stop_reason 四变体」
     approx_context_tokens: int | None = None       # 当前上下文近似 token 数
-    usage: Usage | None = None                     # 🟡 恒 None，待上游（见「成本」）
-    total_cost_usd: float | None = None            # 🟡 恒 None，待上游
+    usage: Usage | None = None                     # 🟠 恒 None，待上游（见「成本」）
+    total_cost_usd: float | None = None            # 🟠 恒 None，待上游
     is_error: bool = False                         # 恒 False（错误走异常通道，不作停机原因）
     # 追加诊断字段（session_id / duration_ms …）见「ResultMessage 追加字段」
 ```
@@ -82,7 +82,7 @@ class ResultMessage:
 
 ### AssistantMessage.error：结构化的单步失败类别 {#assistant-message-error}
 
-`AssistantMessage.error`（🟡 类型就位待上游）给「这一步为什么失败」一个**可判定的类别**，让你不必去异常的字符串里做子串匹配。它是一个 optional literal：
+`AssistantMessage.error`（🟠 类型就位待上游）给「这一步为什么失败」一个**可判定的类别**，让你不必去异常的字符串里做子串匹配。它是一个 optional literal：
 
 ```python
 AssistantMessageError = Literal[
@@ -124,32 +124,32 @@ ContentBlock = TextBlock | ToolUseBlock | ToolResultBlock | ThinkingBlock
 
 @dataclass
 class TextBlock:
-    text: str                                # 🟢 文本
+    text: str                                # 🟠 文本
 
 @dataclass
 class ToolUseBlock:
-    id: str                                  # 🟡 不填充：工具调用 id
+    id: str                                  # 🟠 不填充：工具调用 id
     name: str                                # 被请求的工具名
     input: dict                              # 模型给该工具的入参
 
 @dataclass
 class ToolResultBlock:
-    tool_use_id: str                         # 🟡 不填充：对应的 ToolUseBlock.id
+    tool_use_id: str                         # 🟠 不填充：对应的 ToolUseBlock.id
     content: str | None = None               # 工具返回内容
     is_error: bool = False                   # 工具是否报错
 
 @dataclass
 class ThinkingBlock:
-    thinking: str                            # 🟡 不填充：深度思考文本
+    thinking: str                            # 🟠 不填充：深度思考文本
     signature: str | None = None             # 思考签名（可选）
 ```
 
 | 类 | 字段要点 | v1 |
 | --- | --- | --- |
-| `TextBlock` | `text: str` | 🟢 |
-| `ToolUseBlock` | `id`, `name`, `input: dict` | 🟡 不填充 |
-| `ToolResultBlock` | `tool_use_id`, `content`, `is_error` | 🟡 不填充 |
-| `ThinkingBlock` | `thinking: str`, `signature` | 🟡 不填充 |
+| `TextBlock` | `text: str` | 🟠 |
+| `ToolUseBlock` | `id`, `name`, `input: dict` | 🟠 不填充 |
+| `ToolResultBlock` | `tool_use_id`, `content`, `is_error` | 🟠 不填充 |
+| `ThinkingBlock` | `thinking: str`, `signature` | 🟠 不填充 |
 
 ## 成本：total_cost_usd 与 usage {#cost}
 
@@ -157,8 +157,8 @@ class ThinkingBlock:
 
 | 字段 | 类型 | v1 | 上游后 |
 | --- | --- | --- | --- |
-| `total_cost_usd` | `float \| None` | 🟡 恒 `None` | 🟢 真实花费（美元） |
-| `usage` | `Usage \| None` | 🟡 恒 `None` | 🟢 真实 token 计量 |
+| `total_cost_usd` | `float \| None` | 🟠 恒 `None` | 🟠 真实花费（美元） |
+| `usage` | `Usage \| None` | 🟠 恒 `None` | 🟠 真实 token 计量 |
 
 `Usage` 是 token 计量（dataclass）；v1 恒 `None`，上游后填真实值：
 
@@ -180,10 +180,10 @@ class Usage:
 | 字段 | 类型 | 状态 | 说明 |
 | --- | --- | --- | --- |
 | `session_id` | `str \| None` | 🟠 依赖会话面 | 会话面的 join key：把本次运行的 `ResultMessage` 关联回一个会话/transcript。会话面落地前恒 `None`。 |
-| `duration_ms` | `int \| None` | 🟡 类型就位待上游 | 本次运行的墙钟耗时（毫秒）。 |
-| `api_error_status` | `int \| None` | 🟡 配合 error 分类 | 终止性 API 错误的 HTTP 状态码；与 [`AssistantMessageError`](#assistant-message-error) 配套，让你既知类别又知状态码。无终止错误时 `None`。 |
+| `duration_ms` | `int \| None` | 🟠 类型就位待上游 | 本次运行的墙钟耗时（毫秒）。 |
+| `api_error_status` | `int \| None` | 🟠 配合 error 分类 | 终止性 API 错误的 HTTP 状态码；与 [`AssistantMessageError`](#assistant-message-error) 配套，让你既知类别又知状态码。无终止错误时 `None`。 |
 | `permission_denials` | `list \| None` | 🟠 依赖权限面 | 本次运行被权限面拒绝的工具调用记录。权限面落地前恒 `None`。 |
-| `errors` | `list[str] \| None` | 🟡 类型就位待上游 | 循环级错误字符串（如 max-turns 提示），用于诊断而非分支。 |
+| `errors` | `list[str] \| None` | 🟠 类型就位待上游 | 循环级错误字符串（如 max-turns 提示），用于诊断而非分支。 |
 
 `is_error` 的语义不变——恒 `False`（错误走异常通道，不作停机原因）；要判断「这一步/这次为何失败」，请用结构化的 [`AssistantMessageError`](#assistant-message-error)（步级类别）与 `api_error_status`（HTTP 状态码），而非 `is_error` 布尔。
 
@@ -219,7 +219,7 @@ class RateLimitEvent:
 
 ## UserMessage 未来字段 {#usermessage-未来字段}
 
-`UserMessage` 当前只有 `content`。待 subagent（子代理）与工具结果回填落地后，追加两个字段（🟡 类型就位、v1 不填充）：
+`UserMessage` 当前只有 `content`。待 subagent（子代理）与工具结果回填落地后，追加两个字段（🟠 类型就位、v1 不填充）：
 
 | 字段 | 类型 | 用途 |
 | --- | --- | --- |

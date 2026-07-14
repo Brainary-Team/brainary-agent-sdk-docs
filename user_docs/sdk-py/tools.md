@@ -132,8 +132,8 @@ class CapabilityUnit: ...
 
 | 能力 | v1 | 状态 |
 | --- | --- | --- |
-| 挂载一个 MCP server | `Options(mcp_servers=[url, ...])`（糖） | 🟢 |
-| 富配置（Stdio/SSE/Http、鉴权头等） | 目前糖只收 URL | 🟡 待扩 |
+| 挂载一个 MCP server | `Options(mcp_servers=[url, ...])`（糖） | 🟠 |
+| 富配置（Stdio/SSE/Http、鉴权头等） | 目前糖只收 URL | 🟠 待扩 |
 | 运行时控制（`get_mcp_status` / `reconnect` / `toggle`） | — | 🟠 未实现 |
 
 MCP 服务端契约见 MCP 接入（Rust/core 侧，契约跨语言一致）。

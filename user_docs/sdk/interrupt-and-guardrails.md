@@ -102,7 +102,7 @@ println!("≈{:?} tokens / 窗口 {}", client.approx_context_tokens(), client.co
 **未在注册表里的模型**（经 llmy `custom_model`，即用 `name,in_price,out_price` 自定义定价那种）的 `max_input_tokens = 0`——表示**窗口未知**，而非「窗口为零」。
 
 - 此时上下文护栏**故意不生效**（`return false`），运行回退到 `max_turns` 兜底。
-- 原因：对一个未知的窗口设护栏，会把「`approx_tokens >= 0`」判为真而**在第 0 轮就误停**，agent 一步都跑不了。这正是首次真机运行修掉的回归。
+- 原因：对一个未知的窗口设护栏，会把「`approx_tokens >= 0`」判为真而**在第 0 轮就误停**，agent 一步都跑不了。这正是设计上要规避的回归。
 - 实践建议：用自定义/未注册模型时，**务必设 `max_turns`**，因为上下文护栏对它是失效的。
 
 ## `auto_compact`：v1 仅 `Off` 占位

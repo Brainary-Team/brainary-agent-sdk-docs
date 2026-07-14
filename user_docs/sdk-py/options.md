@@ -127,11 +127,11 @@ with pytest.raises(Exception):
 
 ## 目标配置面（规划中，🟠）
 
-> 图例：🟢 已落地（上表）· 🟠 已规划、字段名已定、尚未实现。
+> 图例：🟠 已落地（上表）· 🟠 已规划、字段名已定、尚未实现。
 >
-> 上面的字段逐项表覆盖当前 🟢 面；但要成为一只完整的编码 agent SDK，`Options` 还欠一整块**表面积**——权限、hooks、子 agent、设置来源、沙箱、插件、推理控制等。这块是**规划形态**，字段名（snake_case）如下已定，随底层架构推进逐项落地。Rust 侧等价物见 [Rust：Options](/sdk/options)。
+> 上面的字段逐项表覆盖当前 🟠 面；但要成为一只完整的编码 agent SDK，`Options` 还欠一整块**表面积**——权限、hooks、子 agent、设置来源、沙箱、插件、推理控制等。这块是**规划形态**，字段名（snake_case）如下已定，随底层架构推进逐项落地。Rust 侧等价物见 [Rust：Options](/sdk/options)。
 
-以下都是 `Options(...)` 的 🟠 dataclass 字段，与 🟢 字段自由混用；必填项仍只有 `model`。
+以下都是 `Options(...)` 的 🟠 dataclass 字段，与 🟠 字段自由混用；必填项仍只有 `model`。
 
 | 字段（🟠 规划） | 类型 | 说明 |
 | --- | --- | --- |
@@ -153,7 +153,7 @@ with pytest.raises(Exception):
 
 ### `project_dir` / `add_dirs` / cwd 的关系
 
-- `project_dir`（🟢）：文件夹沙箱的**命名空间**（`workspace`），能力糖，把某文件夹装成可被工具操作的沙箱。
+- `project_dir`（🟠）：文件夹沙箱的**命名空间**（`workspace`），能力糖，把某文件夹装成可被工具操作的沙箱。
 - `add_dirs`（🟠）：在此之外声明**额外可访问目录**，用于多仓/跨目录工作，不改变沙箱命名空间。
 - 二者都不等同进程 **cwd**。SDK 是进程内库、不派生子进程，没有「CLI cwd」这一档；相对路径按 `project_dir`（缺省则当前进程工作目录）解析，无需也无「设 cwd」字段——这是与 CLI 子进程模型的关键差异。
 
