@@ -22,7 +22,7 @@ export const I18N = {
     'hero.lead2': '的智能体',
     'hero.tw': ['自我认知', '元认知推理', '自我进化', '仿生架构'],
     'hero.para':
-      '一个召之即来的智能体，却不止于编码 —— 它替你写代码、打理日常工作、陪你思考，乃至成为你的数字分身。底层是仿生的元认知内核：<span class="font-mono text-[var(--color-ink)]">会审视自己的推理</span>、从经验中沉淀能力，越用越懂你。',
+      '召之即来，却不止于编码 —— 替你写代码、打理日常、陪你思考，乃至成为你的数字分身。底层是仿生的元认知内核：<span class="font-mono text-[var(--color-ink)]">会审视自己的推理</span>，从经验中沉淀能力，越用越懂你。',
     'hero.btnDownload': '下载 Brainary CLI',
     'hero.btnDocs': '查看 SDK 文档',
     'hero.t1': '编码 · 日常 · 思考 · 分身',
@@ -64,14 +64,14 @@ export const I18N = {
       '不只是调用模型，<br class="hidden sm:block" />而是<span class="text-gradient">会思考自己</span>的智能体',
     'cap.c1.title': '元认知',
     'cap.c1.desc':
-      '审视自己的推理过程，知道自己知道什么、不知道什么，并据此调整策略 —— 一个会回看自身思维的系统。',
+      '审视自己的推理，清楚自己知道什么、不知道什么，并据此调整策略 —— 一个会回看自身思维的系统。',
     'cap.c2.title': '自我进化',
     'cap.c2.desc': '从交互与经验中沉淀可复用能力，越用越强，无需每次从零开始。',
     'cap.c3.title': '仿生架构',
     'cap.c3.desc': '感知—记忆—决策—行动的类脑闭环，让能力像器官一样可组合、可协作。',
     'cap.c4.title': '多种身位',
     'cap.c4.desc':
-      '从编码到日常工作、辅助思考，乃至你的<span class="font-mono text-[var(--color-ink)]">数字分身</span> —— 同一个会进化的元认知内核，换一副身位继续懂你。',
+      '从编码到日常、辅助思考，乃至你的<span class="font-mono text-[var(--color-ink)]">数字分身</span> —— 同一个会进化的内核，换一副身位继续懂你。',
 
     // 快捷入口
     'entry.eyebrow': '快捷入口',
@@ -136,7 +136,7 @@ export const I18N = {
     'hero.lead2': '',
     'hero.tw': ['knows itself', 'reasons about reasoning', 'evolves with use', 'thinks like a brain'],
     'hero.para':
-      'An agent you summon on demand — and it goes beyond coding. It writes your code, handles daily work, thinks alongside you, even becomes your digital twin. Underneath is a bionic metacognitive core that <span class="font-mono text-[var(--color-ink)]">examines its own reasoning</span>, distills skill from experience, and understands you more the more you use it.',
+      'Summon it on demand — it goes beyond coding: writing your code, handling daily work, thinking alongside you, even as your digital twin. Underneath is a bionic metacognitive core that <span class="font-mono text-[var(--color-ink)]">examines its own reasoning</span>, distills skill from experience, and understands you more over time.',
     'hero.btnDownload': 'Download Brainary CLI',
     'hero.btnDocs': 'View SDK Docs',
     'hero.t1': 'Coding · Work · Thinking · Twin',
