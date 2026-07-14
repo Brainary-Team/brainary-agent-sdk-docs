@@ -208,6 +208,70 @@ body {
   transform: translateY(-2px);
 }
 
+/* ── 一行命令安装框（替代「下载 CLI」按钮）────────────────
+   终端质感:$ 提示符 + 等宽命令 + 右侧复制按钮;命令过长可横向滚动。
+   命令文本由 config.cliInstallCmd 经 main.js 注入到所有 [data-install-cmd]。 */
+.install-box {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 30rem;
+  padding: 0.6rem 0.6rem 0.6rem 1rem;
+  border-radius: 0.8rem;
+  background: color-mix(in srgb, var(--color-abyss) 62%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-hair) 90%, transparent);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.install-box:hover,
+.install-box:focus-within {
+  border-color: color-mix(in srgb, var(--color-teal) 48%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-teal) 22%, transparent);
+}
+.install-prompt {
+  flex-shrink: 0;
+  color: var(--color-teal);
+  font-weight: 600;
+  user-select: none;
+}
+.install-cmd {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  color: var(--color-ink);
+  font-size: 0.86rem;
+  letter-spacing: -0.01em;
+  scrollbar-width: none;
+}
+.install-cmd::-webkit-scrollbar { display: none; }
+.install-copy {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  padding: 0.42rem 0.65rem;
+  border-radius: 0.55rem;
+  font-size: 0.76rem;
+  color: var(--color-mist);
+  border: 1px solid var(--color-hair);
+  background: color-mix(in srgb, var(--color-panel) 55%, transparent);
+  cursor: pointer;
+  transition: color 0.22s, border-color 0.22s, background 0.22s;
+}
+.install-copy:hover {
+  color: var(--color-teal);
+  border-color: color-mix(in srgb, var(--color-teal) 55%, transparent);
+  background: color-mix(in srgb, var(--color-teal) 10%, transparent);
+}
+.install-copy .ic-check { display: none; }
+.install-copy.copied {
+  color: var(--color-teal);
+  border-color: color-mix(in srgb, var(--color-teal) 55%, transparent);
+}
+.install-copy.copied .ic-copy { display: none; }
+.install-copy.copied .ic-check { display: inline-block; }
+
 /* ── 入场动画（滚动揭示 + 载入 stagger）──────────────── */
 @keyframes rise {
   from { opacity: 0; transform: translateY(26px); }

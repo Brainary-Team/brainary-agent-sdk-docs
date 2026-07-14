@@ -40,7 +40,6 @@ export function renderNav(el) {
       </div>
       <div class="flex items-center gap-3">
         <button id="lang-toggle" class="grid place-items-center h-9 min-w-9 px-2.5 rounded-lg glass font-mono text-xs tracking-wider text-[var(--color-mist)] hover:text-[var(--color-ink)] transition-colors" aria-label="Switch language">EN</button>
-        <a href="${site.cliDownloadUrl}" class="btn btn-primary !py-2 !px-4 text-sm" data-i18n="nav.cliBtn">下载 CLI</a>
         <button id="nav-toggle" class="md:hidden grid place-items-center w-9 h-9 rounded-lg glass" aria-label="展开菜单" data-i18n-aria="a11y.menu" aria-expanded="false">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>

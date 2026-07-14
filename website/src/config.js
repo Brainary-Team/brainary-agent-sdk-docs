@@ -9,8 +9,13 @@ export const site = {
   docsUrl: 'docs/',
   // 未来 Brainary Code 产品文档，尚未上线 → 占位（方案 5.3）。
   codeDocsUrl: '#',
-  // CLI 二进制下载，待子乔提供后替换（方案 6 待办）。禁止编造真实地址。
-  cliDownloadUrl: '#',
+  // 「安装 CLI」不再是下载按钮，而是一行可复制的安装命令（macOS / Linux）。
+  // ⚠ 占位：install.sh 端点尚未上线，待子乔提供真实安装源后替换（方案 6 待办）。
+  //   单一真源：main.js 会把此串写进页面所有 [data-install-cmd]，HTML 里的同串仅作无-JS 兜底。
+  //   禁止编造第三方地址；此处用站点自有域名，脚本可后续放进 website/public/install.sh。
+  cliInstallCmd: 'curl -fsSL https://docs.lzbrainary.com/install.sh | sh',
+  // 导航/页脚「安装 CLI」指向首屏安装命令框（锚点）。
+  installAnchor: '#install',
   year: 2026,
 }
 

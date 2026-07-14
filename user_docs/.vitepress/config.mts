@@ -91,43 +91,81 @@ export default withMermaid(defineConfig({
     sidebar: {
       '/sdk/': [
         {
-          text: 'brainary-agent-sdk（Rust）',
+          text: '入门与示例',
+          collapsed: false,
           items: [
             { text: '能力总览', link: '/sdk/overview' },
-            { text: '接口索引', link: '/sdk/api-index' },
             { text: '示例用法', link: '/sdk/examples' },
+            { text: '接口索引', link: '/sdk/api-index' },
+          ],
+        },
+        {
+          text: '核心用法',
+          collapsed: false,
+          items: [
             { text: '两个入口：query 与 Client', link: '/sdk/query-and-client' },
-            { text: '运行一个 PoA（poa feature）', link: '/sdk/running-a-poa' },
             { text: 'Options 配置', link: '/sdk/options' },
             { text: '消息模型', link: '/sdk/messages' },
+            { text: '运行一个 PoA（poa feature）', link: '/sdk/running-a-poa' },
+          ],
+        },
+        {
+          text: '工具与扩展',
+          collapsed: false,
+          items: [
             { text: '内置工具目录', link: '/sdk/builtin-tools' },
             { text: '自定义工具 FunctionTools', link: '/sdk/tools' },
+            { text: 'Hooks 生命周期钩子', link: '/sdk/hooks' },
+          ],
+        },
+        {
+          text: '运行时与治理',
+          collapsed: false,
+          items: [
+            { text: '会话管理', link: '/sdk/sessions' },
+            { text: '会话导出 transcript', link: '/sdk/transcript' },
+            { text: '权限模型', link: '/sdk/permissions' },
             { text: '错误处理', link: '/sdk/errors' },
             { text: '中断与护栏', link: '/sdk/interrupt-and-guardrails' },
-            { text: '会话导出 transcript', link: '/sdk/transcript' },
-            { text: '会话管理', link: '/sdk/sessions' },
-            { text: '权限模型', link: '/sdk/permissions' },
-            { text: 'Hooks 生命周期钩子', link: '/sdk/hooks' },
             { text: '边界与路线图', link: '/sdk/limits' },
           ],
         },
       ],
       '/sdk-py/': [
         {
-          text: 'brainary-agent-sdk（Python）',
+          text: '入门与示例',
+          collapsed: false,
           items: [
             { text: '能力总览', link: '/sdk-py/overview' },
-            { text: '接口索引', link: '/sdk-py/api-index' },
             { text: '示例用法', link: '/sdk-py/examples' },
+            { text: '接口索引', link: '/sdk-py/api-index' },
+          ],
+        },
+        {
+          text: '核心用法',
+          collapsed: false,
+          items: [
             { text: '两个入口：query 与 Client', link: '/sdk-py/query-and-client' },
             { text: 'Options 配置', link: '/sdk-py/options' },
             { text: '消息模型', link: '/sdk-py/messages' },
+          ],
+        },
+        {
+          text: '工具与扩展',
+          collapsed: false,
+          items: [
             { text: '内置工具目录', link: '/sdk-py/builtin-tools' },
             { text: '自定义工具', link: '/sdk-py/tools' },
-            { text: '错误处理', link: '/sdk-py/errors' },
+            { text: 'Hooks 生命周期钩子', link: '/sdk-py/hooks' },
+          ],
+        },
+        {
+          text: '运行时与治理',
+          collapsed: false,
+          items: [
             { text: '会话管理', link: '/sdk-py/sessions' },
             { text: '权限模型', link: '/sdk-py/permissions' },
-            { text: 'Hooks 生命周期钩子', link: '/sdk-py/hooks' },
+            { text: '错误处理', link: '/sdk-py/errors' },
             { text: '边界与路线图', link: '/sdk-py/limits' },
           ],
         },

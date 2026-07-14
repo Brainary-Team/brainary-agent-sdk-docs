@@ -15,6 +15,7 @@ import { renderNav } from './partials/nav.js'
 import { renderFooter } from './partials/footer.js'
 import { initNeural } from './neural.js'
 import { I18N, getLang, setLang, applyI18n } from './i18n.js'
+import { site } from './config.js'
 
 // ── 注入公共 chrome（nav / footer）────────────────────────
 const navEl = document.getElementById('site-nav')
@@ -198,6 +199,56 @@ if (!('IntersectionObserver' in window)) {
     io.observe(el)
   })
 }
+
+// ── 一行命令安装：单一真源写入 + 复制到剪贴板 ───────────
+// 命令文本以 config.cliInstallCmd 为准，覆盖 HTML 内联兜底串，全站各处安装框保持一致。
+document.querySelectorAll('[data-install-cmd]').forEach((el) => {
+  if (site.cliInstallCmd) el.textContent = site.cliInstallCmd
+})
+
+async function copyText(text) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text)
+      return true
+    }
+  } catch (_) {}
+  // 兜底：非安全上下文用临时 textarea + execCommand
+  try {
+    const ta = document.createElement('textarea')
+    ta.value = text
+    ta.setAttribute('readonly', '')
+    ta.style.position = 'fixed'
+    ta.style.opacity = '0'
+    document.body.appendChild(ta)
+    ta.select()
+    const ok = document.execCommand('copy')
+    document.body.removeChild(ta)
+    return ok
+  } catch (_) {
+    return false
+  }
+}
+
+// 事件委托：任意安装框内的复制按钮都生效（hero / 快捷入口 / CTA 共用同一逻辑）
+document.addEventListener('click', async (e) => {
+  const btn = e.target.closest('.install-copy')
+  if (!btn) return
+  const box = btn.closest('.install-box')
+  const cmd = box?.querySelector('[data-install-cmd]')?.textContent?.trim()
+  if (!cmd) return
+  const ok = await copyText(cmd)
+  if (!ok) return
+  const label = btn.querySelector('.install-copy-label')
+  const dict = I18N[lang] || I18N.zh
+  btn.classList.add('copied')
+  if (label) label.textContent = dict['install.copied']
+  clearTimeout(btn._copiedTimer)
+  btn._copiedTimer = setTimeout(() => {
+    btn.classList.remove('copied')
+    if (label) label.textContent = (I18N[lang] || I18N.zh)['install.copy']
+  }, 1800)
+})
 
 // 年份兜底（若模板里有占位）
 document.querySelectorAll('[data-year]').forEach((el) => (el.textContent = '2026'))

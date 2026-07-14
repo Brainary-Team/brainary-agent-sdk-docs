@@ -13,7 +13,14 @@ export const I18N = {
     'nav.capabilities': '能力',
     'nav.sdk': 'SDK 文档',
     'nav.code': 'Code SDK',
-    'nav.cliBtn': '下载 CLI',
+    'nav.cliBtn': '安装 CLI',
+
+    // 一行命令安装（复制到终端）
+    'install.copy': '复制',
+    'install.copied': '已复制',
+    'install.hint': 'macOS / Linux · 复制到终端运行',
+    'install.boxAria': 'Brainary CLI 安装命令',
+    'install.copyAria': '复制安装命令',
 
     // Hero
     'hero.pill': 'METACOGNITIVE AGENT',
@@ -76,10 +83,9 @@ export const I18N = {
     // 快捷入口
     'entry.eyebrow': '快捷入口',
     'entry.title': '从这里开始',
-    'entry.cli.tag': '占位',
-    'entry.cli.title': '下载 Brainary CLI',
-    'entry.cli.desc': '获取命令行工具，本地跑通第一个智能体。二进制包即将提供。',
-    'entry.cli.cta': '获取 CLI',
+    'entry.cli.tag': 'macOS / Linux',
+    'entry.cli.title': '安装 Brainary CLI',
+    'entry.cli.desc': '复制下面这行命令到终端，一行装好命令行工具，本地跑通第一个智能体。',
     'entry.sdk.tag': '已上线',
     'entry.sdk.title': 'SDK 文档',
     'entry.sdk.desc': 'brainary-sdk 的完整用户文档：入口、Options、消息模型、工具与 primitive。',
@@ -101,7 +107,7 @@ export const I18N = {
       '具备元认知与自我进化能力的智能体 —— 从编码到日常、思考与数字分身，召之即来，越用越懂你。',
     'footer.demoTag': 'DEMO · 占位演示站',
     'footer.colProduct': '产品',
-    'footer.cli': '下载 CLI',
+    'footer.cli': '安装 CLI',
     'footer.sdk': 'SDK 文档',
     'footer.code': 'Code SDK',
     'footer.colCompany': '公司',
@@ -127,7 +133,14 @@ export const I18N = {
     'nav.capabilities': 'Capabilities',
     'nav.sdk': 'SDK Docs',
     'nav.code': 'Code SDK',
-    'nav.cliBtn': 'Download CLI',
+    'nav.cliBtn': 'Install CLI',
+
+    // One-line install (copy into terminal)
+    'install.copy': 'Copy',
+    'install.copied': 'Copied',
+    'install.hint': 'macOS / Linux · paste into your terminal',
+    'install.boxAria': 'Brainary CLI install command',
+    'install.copyAria': 'Copy install command',
 
     // Hero
     'hero.pill': 'METACOGNITIVE AGENT',
@@ -192,10 +205,9 @@ export const I18N = {
     // Quick start
     'entry.eyebrow': 'Quick Start',
     'entry.title': 'Start here',
-    'entry.cli.tag': 'Placeholder',
-    'entry.cli.title': 'Download Brainary CLI',
-    'entry.cli.desc': 'Get the CLI and run your first agent locally. Binaries coming soon.',
-    'entry.cli.cta': 'Get the CLI',
+    'entry.cli.tag': 'macOS / Linux',
+    'entry.cli.title': 'Install Brainary CLI',
+    'entry.cli.desc': 'Copy the command below into your terminal — one line installs the CLI so you can run your first agent locally.',
     'entry.sdk.tag': 'Live',
     'entry.sdk.title': 'SDK Docs',
     'entry.sdk.desc':
@@ -219,7 +231,7 @@ export const I18N = {
       'An agent with metacognition and self-evolution — from coding to daily work, thinking and a digital twin. Summon it on demand; it understands you more over time.',
     'footer.demoTag': 'DEMO · Placeholder site',
     'footer.colProduct': 'Product',
-    'footer.cli': 'Download CLI',
+    'footer.cli': 'Install CLI',
     'footer.sdk': 'SDK Docs',
     'footer.code': 'Code SDK',
     'footer.colCompany': 'Company',

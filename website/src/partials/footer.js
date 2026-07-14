@@ -16,7 +16,7 @@ export function renderFooter(el) {
         <div class="grid grid-cols-2 gap-x-14 gap-y-3 text-sm">
           <div class="flex flex-col gap-3">
             <span class="eyebrow mb-1" data-i18n="footer.colProduct">产品</span>
-            <a href="${site.cliDownloadUrl}" class="text-[var(--color-mist)] hover:text-[var(--color-ink)] transition-colors" data-i18n="footer.cli">下载 CLI</a>
+            <a href="${site.installAnchor}" class="text-[var(--color-mist)] hover:text-[var(--color-ink)] transition-colors" data-i18n="footer.cli">安装 CLI</a>
             <a href="${site.docsUrl}" target="_blank" rel="noopener" class="text-[var(--color-mist)] hover:text-[var(--color-ink)] transition-colors" data-i18n="footer.sdk">SDK 文档</a>
             <a href="${site.codeDocsUrl}" class="text-[var(--color-mist)] hover:text-[var(--color-ink)] transition-colors"><span data-i18n="footer.code">Code SDK</span> <span class="text-[var(--color-faint)] font-mono text-[0.6rem]">SOON</span></a>
           </div>
