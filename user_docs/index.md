@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "brainary-agent-sdk"
   text: "构建 LLM Agent 的门面 SDK"
-  tagline: query() 一行式入口与 BrainaryClient 多轮，统一 Options 与步级 Message 流，构建具备执行、记忆与工具调用的智能体；Python 与 Rust 双版本对齐同一套接口。
+  tagline: 面向应用开发者的高层门面：query() 一行式入口、BrainaryClient 多轮会话，统一 Options 配置与步级 Message 流；Python / Rust 双版本对齐同一套接口。
   actions:
     - theme: brand
       text: Python 版能力总览
@@ -15,11 +15,13 @@ hero:
 
 features:
   - title: 两个入口：query 与 Client
-    details: query() 一行式跑一次性任务，BrainaryClient 承载多轮会话；同一套 Options 塑形、同一条步级 Message 流，应用开发者默认只依赖 SDK 一行。
+    details: query() 跑一次性任务，BrainaryClient 承载多轮会话；同一套 Options 塑形、同一条步级 Message 流，应用开发者只依赖 SDK 一行。
   - title: 内置工具与自定义工具
-    details: 开箱即用的内置工具目录，配合 FunctionTools 自定义扩展；错误处理、中断与护栏、会话导出等能力统一经 SDK 表面暴露。
+    details: 内置工具目录 + FunctionTools 自定义扩展；错误处理、中断与护栏、会话导出等能力统一经 SDK 表面暴露。
   - title: Python 与 Rust 双版本
-    details: brainary-agent-sdk（Python）与 brainary-agent-sdk（Rust）提供对齐的接口形态与消息模型，按你的技术栈择一接入。
+    details: 两版接口形态与消息模型对齐，按你的技术栈择一接入。
 ---
 
-> 🚧 标注 🚧 的页面或小节仍在完善，🟠 表示能力尚在规范/占位阶段，🔴 表示能力暂不可用。
+::: warning 当前状态：全部接口规划中、未完成
+brainary-agent-sdk 的**全部接口均为 🟠【规划中，未完成】**——架构与签名已规划、尚未实现。文档给出的类型、签名、字段均为**已承诺的形态**，供对齐讨论，非可用实现。
+:::
