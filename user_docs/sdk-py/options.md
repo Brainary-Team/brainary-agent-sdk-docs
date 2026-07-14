@@ -50,35 +50,6 @@ options = Options(
 
 > `model` 未设时，构造 `Options(...)` 或首次 `query()` / 建 client 时会抛配置异常（见下「model 未设 → 报错」）。
 
-## 模型：ModelSelection 与 model_from_env() {#model-selection}
-
-`model` 字段的类型是 `ModelSelection`——「用哪个模型、怎么连」。最常用的是从环境变量读取的便捷构造器 `Options.model_from_env()`：
-
-```python
-class ModelSelection:
-    def __init__(
-        self,
-        *,
-        model: str,                        # 模型名 / id
-        api_key: str,                      # 接入密钥
-        endpoint: str,                     # API base URL
-        use_full_model_id: bool = False,   # 是否使用完整模型 id
-    ) -> None: ...
-
-class Options:
-    @staticmethod
-    def model_from_env() -> ModelSelection: ...
-    # 从环境变量读取：OPENAI_API_KEY / OPENAI_API_MODEL / OPENAI_API_URL。
-    # 三者缺一即抛配置异常（BuildError，见 /sdk-py/errors）。
-```
-
-| 构造方式 | 返回 | 说明 |
-| --- | --- | --- |
-| `Options.model_from_env()` | `ModelSelection` | 从 `OPENAI_API_KEY` / `OPENAI_API_MODEL` / `OPENAI_API_URL` 读取（推荐） |
-| `ModelSelection(model=, api_key=, endpoint=)` | `ModelSelection` | 显式给全三项 |
-
-> **关于 Provider**：v1 走 **OpenAI 兼容端点**——「用哪家」隐含在 `endpoint`（`OPENAI_API_URL`）里，只要对方暴露 OpenAI 兼容 API（OpenAI 官方、兼容网关、自建推理服务等）即可接入。**没有独立的多-provider 抽象**（如 Anthropic / Gemini 原生协议切换）；若未来要支持非兼容协议，需另加一层 provider 面。当前 `ModelSelection` 三项（model / key / endpoint）即完整接入信息。
-
 ## 系统提示：SystemPrompt
 
 系统提示有三种来源；`system_prompt` 字段收其中常用的两种（`str` 即内联），也可给完整 `SystemPrompt`：
@@ -110,6 +81,35 @@ class SystemPrompt:
 
 - **糖**（`enable_memory` / `project_dir` / `mcp_servers`）：SDK 替你把常用能力装配成 primitive，你不必知道 primitive 的类型名。
 - **逃生口**（`extra_primitives` / `extra_tools`）：糖不够用时，`extra_primitives` 收任意 primitive，`extra_tools` 收一组 `@tool` 打包的轻量工具。两者一起进入构建期的工具去重与命名空间校验——撞名在装配 agent 时报错（见 [错误处理](/sdk-py/errors)）。
+
+## 选模型：ModelSelection {#model-selection}
+
+`model` 字段的类型是 `ModelSelection`——「用哪个模型、怎么连」。最常用的是从环境变量读取的便捷构造器 `Options.model_from_env()`：
+
+```python
+class ModelSelection:
+    def __init__(
+        self,
+        *,
+        model: str,                        # 模型名 / id
+        api_key: str,                      # 接入密钥
+        endpoint: str,                     # API base URL
+        use_full_model_id: bool = False,   # 是否使用完整模型 id
+    ) -> None: ...
+
+class Options:
+    @staticmethod
+    def model_from_env() -> ModelSelection: ...
+    # 从环境变量读取：OPENAI_API_KEY / OPENAI_API_MODEL / OPENAI_API_URL。
+    # 三者缺一即抛配置异常（BuildError，见 /sdk-py/errors）。
+```
+
+| 构造方式 | 返回 | 说明 |
+| --- | --- | --- |
+| `Options.model_from_env()` | `ModelSelection` | 从 `OPENAI_API_KEY` / `OPENAI_API_MODEL` / `OPENAI_API_URL` 读取（推荐） |
+| `ModelSelection(model=, api_key=, endpoint=)` | `ModelSelection` | 显式给全三项 |
+
+> **关于 Provider**：v1 走 **OpenAI 兼容端点**——「用哪家」隐含在 `endpoint`（`OPENAI_API_URL`）里，只要对方暴露 OpenAI 兼容 API（OpenAI 官方、兼容网关、自建推理服务等）即可接入。**没有独立的多-provider 抽象**（如 Anthropic / Gemini 原生协议切换）；若未来要支持非兼容协议，需另加一层 provider 面。当前 `ModelSelection` 三项（model / key / endpoint）即完整接入信息。
 
 ## model 未设 → 报错
 

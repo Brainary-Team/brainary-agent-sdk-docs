@@ -85,28 +85,6 @@ async with BrainaryClient(options) as client:   # 建立并持有 agent（含 MC
 - **一次进入、长期持有**：`async with BrainaryClient(options) as client` 建好 agent 并持有其名下活资源；离开 `async with` 才释放。
 - **送入一轮、收一轮**：`await client.query(prompt)` 追加一轮，`client.receive_response()` 迭代到本轮 `ResultMessage` 为止。上一轮消息与工作记忆都还在。
 
-## 怎么中断一次运行
-
-Python 无借用限制，中断就是 client 上的一个方法（`await client.interrupt()`）。把它放进定时器 / 信号处理 / 另一个 task，条件满足时调用：
-
-```python
-import asyncio
-
-async with BrainaryClient(options) as client:
-    async def watchdog():
-        await asyncio.sleep(30)
-        await client.interrupt()            # 请求步间中断
-
-    asyncio.create_task(watchdog())
-    await client.query("一个很长的任务")
-    async for _ in client.receive_response():
-        pass
-```
-
-`interrupt()` 只是置一个标志；驱动循环在**下一步开始前**退出，并以 `stop_reason="interrupted"` 收尾。**没有「步内取消」**——进行中的那一步会先跑完。护栏细节见 [消息模型](/sdk-py/messages#stopreason)。
-
-> 与 Rust 版的差异：Rust 因借用冲突把中断外置成句柄 `InterruptHandle`；Python 无此约束，直接做成 `client.interrupt()` 方法，更简单。
-
 ## 流式输入（str 之外）{#流式输入}
 
 ::: warning 架构已规划、尚未实现（🟠）
@@ -128,6 +106,28 @@ async for msg in query(prompt=user_turns(), options=options):
 ```
 
 每个 yield 项是一条用户消息 dict（`{"type": "user", "content": str | list[ContentBlock]}`）。与字符串输入的唯一区别是**输入端也成了流**；输出端消费方式不变。
+
+## 怎么中断一次运行
+
+Python 无借用限制，中断就是 client 上的一个方法（`await client.interrupt()`）。把它放进定时器 / 信号处理 / 另一个 task，条件满足时调用：
+
+```python
+import asyncio
+
+async with BrainaryClient(options) as client:
+    async def watchdog():
+        await asyncio.sleep(30)
+        await client.interrupt()            # 请求步间中断
+
+    asyncio.create_task(watchdog())
+    await client.query("一个很长的任务")
+    async for _ in client.receive_response():
+        pass
+```
+
+`interrupt()` 只是置一个标志；驱动循环在**下一步开始前**退出，并以 `stop_reason="interrupted"` 收尾。**没有「步内取消」**——进行中的那一步会先跑完。护栏细节见 [消息模型](/sdk-py/messages#stopreason)。
+
+> 与 Rust 版的差异：Rust 因借用冲突把中断外置成句柄 `InterruptHandle`；Python 无此约束，直接做成 `client.interrupt()` 方法，更简单。
 
 ## BrainaryClient 完整方法面（签名）
 

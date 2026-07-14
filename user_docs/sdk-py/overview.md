@@ -12,7 +12,7 @@ outline: 2
 
 它的接口面按「编码智能体 agent SDK」的目标工具视角裁剪，与 Rust 版一一对应（命名两侧一致）；Python 侧的**写法**遵循 Python 惯用法，力求清晰、简单。
 
-## 接口一览：命名与状态（Python） {#interface-overview}
+## 接口一览：命名与状态 {#interface-overview}
 
 | Brainary（Python） | 状态 | 去哪页 |
 | --- | --- | --- |
@@ -29,7 +29,7 @@ outline: 2
 | `BrainaryError` 异常类树（`BuildError` / `RateLimitError` …） | 🟠 | [错误处理](/sdk-py/errors) |
 | `Options(agents=[...])`（子 agent，SDK 一等面） | 🟠 | [Options](/sdk-py/options) |
 
-> 全表接口均为 🟠【规划中，未完成】——架构已规划、Rust 与 Python 两侧均尚未实现（详见上方规划横幅）。Rust 侧的对应页见 [Rust brainary-agent-sdk 总览](/sdk/overview)。
+> 全表接口均为 🟠【规划中，未完成】——架构已规划、Rust 与 Python 两侧均尚未实现。Rust 侧的对应页见 [Rust brainary-agent-sdk 总览](/sdk/overview)。
 
 ## 两个入口
 
@@ -42,7 +42,18 @@ outline: 2
 
 ## 状态说明
 
-本 SDK **全部接口均为 🟠【规划中，未完成】**——架构已规划、尚未实现；本章给出的类型、签名、字段均为**已承诺的形态**，供对齐讨论，非可用实现。（⚪ = 暂缓 / 不纳入，非交付接口。）
+本 SDK **全部接口均为 🟠【规划中，未完成】**——架构已规划、尚未实现；本章给出的类型、签名、字段均为**已承诺的形态**，供对齐讨论，非可用实现。
+
+**状态图标图例**（全站统一，权威定义见 [边界与路线图](/sdk-py/limits)）：
+
+| 图标 | 含义 |
+| --- | --- |
+| 🟢 | **已完成，可用**——已实现并可正常调用 |
+| 🟠 | **规划中，未完成**——纳入本站交付面；架构与签名已规划、尚未实现 |
+| ⬇️ | **下沉核心层**——非本站门面职责，归 core 层 |
+| ⚪ | **暂缓 / 不纳入**——仅登记（附理由），非交付接口 |
+
+当前**全部纳入面一律为 🟠**（尚无 🟢），不再细分实现档位。
 
 ## 三行起步引子
 
@@ -64,7 +75,7 @@ async def main():
 asyncio.run(main())
 ```
 
-## 本章各页
+## 下一步
 
 - [接口索引](/sdk-py/api-index) —— 按 Functions / Classes / Types 反查接口的状态与落点
 - [示例用法](/sdk-py/examples) —— 四段完整程序：一次性 / 错误处理 / 流式多轮 / 配合自定义工具

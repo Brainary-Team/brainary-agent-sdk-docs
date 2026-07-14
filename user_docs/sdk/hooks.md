@@ -64,7 +64,7 @@ pub struct HookMatcher {
 }
 ```
 
-### HookCallback — 回调形态
+### HookCallback — 回调签名
 
 回调是一个 async 闭包 / trait 对象，拿到强类型的 `HookInput`、可选的 `tool_use_id`、以及 `HookContext`，返回 `HookJSONOutput`。承诺形状：
 

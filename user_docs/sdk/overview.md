@@ -6,14 +6,6 @@ outline: 2
 
 > **读完本页你能**：知道 `brainary-agent-sdk` 是什么、为什么它是应用开发者的默认入口，看懂两个宿主内入口的取舍（以及第三个、跑沙箱 PoA 的入口）与 v1 的能力填充度，并找到本章各页的入口。
 
-::: warning brainary-agent-sdk 尚未合并进主干
-`brainary-agent-sdk` 目前在**独立开发分支**上开发、尚未合并进主干。合并前，`crates/brainary-agent-sdk/` 及其 workspace 成员在主干上尚不可见。文中引用的 `crates/brainary-agent-sdk/src/*.rs` 源码路径均以合并后为准。
-:::
-
-::: danger 当前状态：全部接口规划中、未完成
-本 SDK **全部接口均为 🟠【规划中，未完成】**——架构与签名已规划、尚未实现。本章及各页给出的类型、签名、字段均为**已承诺的形态**，供对齐讨论，非可用实现。
-:::
-
 `brainary-agent-sdk` 是 brainary-rs 的**高层门面 crate**。它把「装配好的 Agent」浓缩成几行调用：一个 `query()` 跑一次性任务，一个 `BrainaryClient` 跑有状态多轮，全部行为收敛到一个 `Options` 配置对象和一条步级 `Message` 流上——你**无需直接接触底层 llmy 类型**。
 
 ## 三层里的第一层
@@ -77,22 +69,22 @@ brainary-agent-sdk 的接口面按「Brainary-Code-like agent SDK」这一目标
 | 运行一个 PoA | `poa` feature + `PoaRunner` 库调用跑 `.poa` | [运行一个 PoA](/sdk/running-a-poa) |
 | 边界与限制 | v1 明确不做的项、受 llmy 限制的项 | [能力边界](/sdk/limits) |
 
-## 能力填充度（规划） {#capability-fill}
+## 状态说明 {#capability-fill}
 
-**状态说明**：本 SDK 全部接口均为 🟠【规划中，未完成】——架构已规划、尚未实现；下方给出的类型、字段均为**已承诺的形态**，供对齐讨论，非占位草案。（⚪ = 暂缓 / 不纳入，非交付接口。）
+本 SDK **全部接口均为 🟠【规划中，未完成】**——架构已规划、尚未实现；本章给出的类型、签名、字段均为**已承诺的形态**，供对齐讨论，非可用实现。
 
-消息模型的**形状已规划建齐**（四类消息 × 四种内容块）。下表列出各字段的规划填充度（落地后按 llmy 上游能力逐步填充）：
+**状态图标图例**（全站统一，权威定义见 [能力边界](/sdk/limits)）：
 
-| 类型 / 字段 | 规划状态 | 上游补齐后 |
-| --- | --- | --- |
-| `AssistantMessage.content = [Text]` | 🟠 | — |
-| `AssistantMessage.requested_tools` | 🟠 粗信号（`did_tool_call`） | 由 `ToolUse` 块取代 |
-| `ContentBlock::ToolUse / ToolResult / Thinking` | 🟠 类型就位（不填充） | 规划：填充 |
-| `SystemMessage(subtype="init")` | 🟠 每次运行发一条 | 其余子类型补齐 |
-| `ResultMessage.num_turns / approx_context_tokens / stop_reason` | 🟠 | — |
-| `ResultMessage.usage / total_cost_usd` | 🟠 恒 `None` | 规划：上游补齐后填真实值 |
+| 图标 | 含义 |
+| --- | --- |
+| 🟢 | **已完成，可用**——已实现并可正常调用 |
+| 🟠 | **规划中，未完成**——纳入本站交付面；架构与签名已规划、尚未实现 |
+| ⬇️ | **下沉核心层**——非本站门面职责，归 core 层 |
+| ⚪ | **暂缓 / 不纳入**——仅登记（附理由），非交付接口 |
 
-字段级说明见 [消息模型](/sdk/messages)，边界裁决见 [能力边界](/sdk/limits)。
+当前**全部纳入面一律为 🟠**（尚无 🟢），不再细分实现档位。
+
+各消息字段的规划填充度见 [消息模型](/sdk/messages)，边界裁决见 [能力边界](/sdk/limits)。
 
 ## 三行起步引子
 
