@@ -6,14 +6,6 @@ outline: 2
 
 > **读完本页你能**：知道这是什么、它与 Rust 版 `brainary-agent-sdk` 和「Python 原版 Brainary 参考」各自的关系，看懂两个入口与状态口径，并找到本章各页入口。
 
-::: warning 本章是「规划：镜像 Rust 的 Python 接口面」
-Python 版 `brainary-agent-sdk` 与 [Rust 版](/sdk/overview) **共享同一套接口清单**，只是签名换成 Python 惯用形态（dataclass 配置、`async for` 消息流、`isinstance` 判型）。Rust 版与 Python 版当前**均为 🟠【规划中，未完成】、尚未实现**（Rust 尚在独立分支、未合并主干）。故本章的类型与签名是**设计形态、尚未实现**，作为跨语言对齐与后续实现的蓝本。凡涉及具体签名处均如此，不再逐页重复声明。
-:::
-
-::: tip 别和「Python 原版 Brainary 参考」混淆
-本站另有一套 Python 参考文档，记录的是**另一个产品**——原版 Brainary（`Brainary()` / `brain.think()` / `Agent` / `AppRunner`）。**本章不是它**。本章是把 Rust `brainary-agent-sdk`（`query` / `BrainaryClient`）**平移到 Python** 的门面。
-:::
-
 ## 定位
 
 `brainary-agent-sdk`（Python）是应用开发者的高层门面：一个 `query()` 跑一次性任务、一个 `BrainaryClient` 跑有状态多轮，全部行为收敛到一个 `Options` 配置对象和一条异步 `Message` 流上——你无需接触底层实现。
