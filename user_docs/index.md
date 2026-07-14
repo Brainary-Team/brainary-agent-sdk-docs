@@ -15,13 +15,9 @@ hero:
 
 features:
   - title: 两个入口：query 与 Client
-    details: query() 跑一次性任务，BrainaryClient 承载多轮会话；同一套 Options 塑形、同一条步级 Message 流，应用开发者只依赖 SDK 一行。
+    details: query() 一行式跑一次性任务，BrainaryClient 承载多轮会话；同一套 Options 塑形、同一条步级 Message 流，应用开发者只需依赖 SDK 一行。
   - title: 内置工具与自定义工具
-    details: 内置工具目录 + FunctionTools 自定义扩展；错误处理、中断与护栏、会话导出等能力统一经 SDK 表面暴露。
+    details: 开箱即用的内置工具目录，配合 FunctionTools 自定义扩展；错误处理、中断与护栏、会话导出统一经 SDK 表面暴露。
   - title: Python 与 Rust 双版本
-    details: 两版接口形态与消息模型对齐，按你的技术栈择一接入。
+    details: 两版接口形态与消息模型完全对齐，按你的技术栈择一接入。
 ---
-
-::: warning 当前状态：全部接口规划中、未完成
-brainary-agent-sdk 的**全部接口均为 🟠【规划中，未完成】**——架构与签名已规划、尚未实现。文档给出的类型、签名、字段均为**已承诺的形态**，供对齐讨论，非可用实现。
-:::

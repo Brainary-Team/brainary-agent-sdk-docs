@@ -4,13 +4,13 @@ outline: 2
 
 # brainary-agent-sdk（Python）总览
 
-> **读完本页你能**：知道这是什么、它与 Rust 版 `brainary-agent-sdk` 和「Python 原版 Brainary 参考」各自的关系，看懂两个入口与状态口径，并找到本章各页入口。
+> **读完本页你能**：知道这是什么、它与 Rust 版 `brainary-agent-sdk` 的关系，看懂两个入口与状态口径，并找到本章各页入口。
 
 ## 定位
 
 `brainary-agent-sdk`（Python）是应用开发者的高层门面：一个 `query()` 跑一次性任务、一个 `BrainaryClient` 跑有状态多轮，全部行为收敛到一个 `Options` 配置对象和一条异步 `Message` 流上——你无需接触底层实现。
 
-它的接口面按「编码智能体 agent SDK」的目标工具视角裁剪，与 Rust 版一一对应（命名沿用 Brainary 名，跨语言一致）；Python 侧的**写法**遵循 Python 惯用法，力求清晰、简单。
+它的接口面按「编码智能体 agent SDK」的目标工具视角裁剪，与 Rust 版一一对应（命名两侧一致）；Python 侧的**写法**遵循 Python 惯用法，力求清晰、简单。
 
 ## 接口一览：命名与状态（Python） {#interface-overview}
 
