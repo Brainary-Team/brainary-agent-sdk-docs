@@ -19,9 +19,24 @@ export function initNeural(canvas) {
   const ptr = { cx: 0, cy: 0, active: false }
   const FIELD_R = 170 // 指针影响半径
   let raf = 0
+  let running = false
+  // 渲染条件：视口内 && 标签页可见。任一不成立就停 rAF——看不见的帧不画。
+  let inView = true
+  let pageVisible = !document.hidden
+
+  // canvas 相对视口的位置：脏标记缓存。原实现每帧取一次 rect，等于每帧强制同步布局；
+  // 位置只随 scroll/resize 变，所以标脏后按需读——纯移动鼠标不再产生任何 rect 读取。
+  let rectLeft = 0, rectTop = 0, rectDirty = true
+  function ensureRect() {
+    if (!rectDirty) return
+    const r = canvas.getBoundingClientRect()
+    rectLeft = r.left; rectTop = r.top
+    rectDirty = false
+  }
 
   function resize() {
     const rect = canvas.getBoundingClientRect()
+    rectLeft = rect.left; rectTop = rect.top; rectDirty = false
     w = rect.width; h = rect.height
     canvas.width = w * dpr; canvas.height = h * dpr
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
@@ -67,12 +82,12 @@ export function initNeural(canvas) {
     const px = (mouse.x - 0.5) * 26
     const py = (mouse.y - 0.5) * 26
 
-    // 指针的 canvas 局部坐标:每帧只取一次 rect,避免在事件回调里强制重排
+    // 指针的 canvas 局部坐标:读缓存的 rect,只在 scroll/resize 标脏后才真正取
     let lx = -1e4, ly = -1e4
     if (!reduce && ptr.active) {
-      const rect = canvas.getBoundingClientRect()
-      lx = ptr.cx - rect.left
-      ly = ptr.cy - rect.top
+      ensureRect()
+      lx = ptr.cx - rectLeft
+      ly = ptr.cy - rectTop
     }
 
     for (const n of nodes) {
@@ -187,9 +202,28 @@ export function initNeural(canvas) {
         }
         return true
       })
-
-      raf = requestAnimationFrame(step)
     }
+  }
+
+  // rAF 收敛到单一 start/stop：running 标志保证任何时刻最多一条 rAF 链。
+  // 原实现由 step() 自调度 + visibilitychange 里再拉一次，快速切标签页会叠出两条链 = 双倍功耗。
+  function loop() {
+    step()
+    if (running) raf = requestAnimationFrame(loop)
+  }
+  function start() {
+    if (running || reduce) return
+    running = true
+    raf = requestAnimationFrame(loop)
+  }
+  function stop() {
+    running = false
+    cancelAnimationFrame(raf)
+    raf = 0
+  }
+  function sync() {
+    if (inView && pageVisible) start()
+    else stop()
   }
 
   // 从节点 a 沿最近突触发出一枚信号
@@ -244,17 +278,28 @@ export function initNeural(canvas) {
   const ro = new ResizeObserver(resize)
   ro.observe(canvas)
   window.addEventListener('pointermove', onMove, { passive: true })
+  // 滚动只改变 canvas 相对视口的位置，不改变尺寸(ResizeObserver 不会触发)，故单独标脏
+  window.addEventListener('scroll', () => { rectDirty = true }, { passive: true })
   if (!reduce) {
     // 指针离开窗口:邻域效应缓缓衰退(reduce 下无动画循环,互动一律不挂)
     window.addEventListener('pointerout', (e) => { if (!e.relatedTarget) ptr.active = false })
     window.addEventListener('pointerdown', onDown, { passive: true })
   }
   resize()
-  step()
+  step() // 先画一帧：reduce 下这就是最终的静态画面；否则作为 loop 的起点
+
+  // 滚出视口就停：Hero 神经场在页面下方看不见时不该继续满帧渲染
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) inView = e.isIntersecting
+    sync()
+  })
+  io.observe(canvas)
 
   // 页面隐藏时暂停，省电
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) cancelAnimationFrame(raf)
-    else if (!reduce) { raf = requestAnimationFrame(step) }
+    pageVisible = !document.hidden
+    sync()
   })
+
+  sync()
 }
