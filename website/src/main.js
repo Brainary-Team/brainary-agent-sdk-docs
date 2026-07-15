@@ -261,7 +261,7 @@ function showSoonToast(msg) {
     t.setAttribute('role', 'status')
     t.setAttribute('aria-live', 'polite')
     t.style.cssText =
-      'position:fixed;left:50%;bottom:2rem;transform:translateX(-50%) translateY(1rem);' +
+      'position:fixed;left:50%;top:5.5rem;transform:translateX(-50%) translateY(-1rem);' +
       'z-index:100;max-width:min(90vw,26rem);padding:0.7rem 1.2rem;border-radius:0.75rem;' +
       'font-size:0.875rem;line-height:1.4;text-align:center;color:var(--color-ink);' +
       'background:color-mix(in srgb, var(--color-void) 82%, transparent);backdrop-filter:blur(14px);' +
@@ -277,7 +277,7 @@ function showSoonToast(msg) {
   clearTimeout(t._timer)
   t._timer = setTimeout(() => {
     t.style.opacity = '0'
-    t.style.transform = 'translateX(-50%) translateY(1rem)'
+    t.style.transform = 'translateX(-50%) translateY(-1rem)'
   }, 2600)
 }
 
