@@ -82,19 +82,13 @@ body {
   background-size: 30px 30px;
   mask-image: radial-gradient(circle at 50% 26%, black, transparent 72%);
   opacity: 0.35;
-  /* 缩放锚点对齐 mask 中心，让 transform 方案与原 background-size 方案的观感差异最小 */
-  transform-origin: 50% 26%;
-  will-change: transform, opacity;
   animation: field-breathe 14s ease-in-out infinite;
 }
 
-/* 整个点阵极缓地「呼吸」，像活体表面。
-   用 transform 而非 background-size：后者非可合成属性，动它等于每帧重新栅格化
-   整个视口的固定背景层(还带 mask)，14s 无限循环、永不停止——静止页面也在烧 CPU。
-   transform/opacity 只走合成器，零重绘。30px→31.5px 正好是 1.05×，幅度等价。 */
+/* 整个点阵极缓地「呼吸」，像活体表面 */
 @keyframes field-breathe {
-  0%, 100% { opacity: 0.28; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(1.05); }
+  0%, 100% { opacity: 0.28; background-size: 30px 30px; }
+  50% { opacity: 0.4; background-size: 31.5px 31.5px; }
 }
 
 /* 细颗粒噪点，压掉渐变的塑料感 */
@@ -454,8 +448,7 @@ body {
   /* 必须带 .js 前缀压过上方 .js .reveal { opacity: 0 }(媒体查询不增加特异性) */
   .reveal, .js .reveal { opacity: 1; animation: none; }
   .cursor::after { animation: none; }
-  /* 不动画就没必要为它常驻一个全屏合成层 */
-  .grid-field { animation: none; will-change: auto; }
+  .grid-field { animation: none; }
   .synapse-ico .spark { animation: none; opacity: 0.9; }
   .trace-dot { animation: none; }
   .js .trace-line { opacity: 1; transform: none; transition: none; }
