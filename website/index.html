@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Brainary · 会自我进化的元认知智能体 | 领智智能</title>
+    <title>Brainary · 会自我进化的元认知智能体 | 瓴知智能</title>
     <meta
       name="description"
-      content="Brainary（领智智能）—— 具备元认知、自我认知与自我进化能力的智能体。召之即来，从编码到日常工作、辅助思考与数字分身。"
+      content="Brainary（瓴知智能）—— 具备元认知、自我认知与自我进化能力的智能体。召之即来，从编码到日常工作、辅助思考与数字分身。"
     />
     <meta name="theme-color" content="#04050a" />
     <!-- 同步标记 JS 可用：让 .reveal 的「初始隐藏」只在有 JS 时生效，避免 JS 失败白屏 -->
@@ -43,7 +43,6 @@
           <div class="max-w-3xl lg:flex-1 min-w-0">
             <div class="reveal inline-flex items-center gap-2.5 mb-7">
               <span class="pill" data-i18n="hero.pill">METACOGNITIVE AGENT</span>
-              <span class="eyebrow" data-i18n="hero.badge">v0 · 预览</span>
             </div>
 
             <h1
@@ -99,14 +98,13 @@
 
           <!-- 签名元素:self-trace 自省流 —— 把「替你做事 + 审视自己的推理 + 沉淀技能」画出来。
                三个示例场景(编码自审 / 会议纪要 / 流程蒸馏):tab 手动切换,每幕播完自动轮到下一幕。
-               每幕都保留缩进的青绿「内心独白」车道(◆)与「技能已沉淀」收束;诚实占位,头部带 DEMO 标签。
+               每幕都保留缩进的青绿「内心独白」车道(◆)与「技能已沉淀」收束。
                无 JS 时第一幕静态直出;reduced-motion 时当前幕整段直出、不轮播,tab 仍可切换。 -->
           <aside class="reveal w-full max-w-lg lg:w-[28rem] xl:w-[32rem] lg:shrink-0" aria-label="Brainary self-trace 自省流示意面板" data-i18n-aria="a11y.trace">
             <div id="self-trace" class="trace-panel glass">
               <div class="trace-head">
                 <span class="trace-dot" aria-hidden="true"></span>
                 <span class="trace-title font-mono" data-i18n="trace.title">brainary · self-trace</span>
-                <span class="trace-tag font-mono" data-i18n="trace.tag">DEMO 示意</span>
               </div>
               <div class="trace-tabs" role="tablist" aria-label="切换自省流示例场景" data-i18n-aria="a11y.traceTabs">
                 <button type="button" id="trace-tab-1" class="trace-tab font-mono is-active" role="tab" aria-selected="true" aria-controls="trace-s1" data-i18n="trace.tab1">编码自审</button>
@@ -310,8 +308,8 @@
             </span>
           </a>
 
-          <!-- Code SDK 文档：未来产品，占位 # + SOON -->
-          <a href="#" class="reveal glass glow-card p-7 flex flex-col group">
+          <!-- Code SDK 文档：未来产品 —— 尚未上线，点击弹「即将上线」提示（非死链） -->
+          <a href="#" data-soon class="reveal glass glow-card p-7 flex flex-col group" role="button" aria-disabled="true">
             <div class="flex items-center justify-between mb-6">
               <span class="grid place-items-center w-11 h-11 rounded-xl glass">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-violet)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 6l-2 12"/></svg>

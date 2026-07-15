@@ -250,5 +250,43 @@ document.addEventListener('click', async (e) => {
   }, 1800)
 })
 
+// ── 「即将上线」提示：未上线入口（Code SDK 等）点击拦截 + 轻量 toast ──
+// 标了 data-soon 的链接不跳死链，而是弹一条自消失提示，随语言切换。
+// toast 用内联样式 + 全局 CSS 变量自包含，不依赖 Tailwind class 扫描。
+function showSoonToast(msg) {
+  let t = document.getElementById('soon-toast')
+  if (!t) {
+    t = document.createElement('div')
+    t.id = 'soon-toast'
+    t.setAttribute('role', 'status')
+    t.setAttribute('aria-live', 'polite')
+    t.style.cssText =
+      'position:fixed;left:50%;top:5.5rem;transform:translateX(-50%) translateY(-1rem);' +
+      'z-index:100;max-width:min(90vw,26rem);padding:0.7rem 1.2rem;border-radius:0.75rem;' +
+      'font-size:0.875rem;line-height:1.4;text-align:center;color:var(--color-ink);' +
+      'background:color-mix(in srgb, var(--color-void) 82%, transparent);backdrop-filter:blur(14px);' +
+      '-webkit-backdrop-filter:blur(14px);border:1px solid var(--color-hair);' +
+      'box-shadow:0 10px 40px rgba(0,0,0,0.45);opacity:0;pointer-events:none;' +
+      'transition:opacity .28s ease, transform .28s ease;'
+    document.body.appendChild(t)
+  }
+  t.textContent = msg
+  void t.offsetHeight // 强制回流，确保过渡从 opacity:0 起步
+  t.style.opacity = '1'
+  t.style.transform = 'translateX(-50%) translateY(0)'
+  clearTimeout(t._timer)
+  t._timer = setTimeout(() => {
+    t.style.opacity = '0'
+    t.style.transform = 'translateX(-50%) translateY(-1rem)'
+  }, 2600)
+}
+
+document.addEventListener('click', (e) => {
+  const soon = e.target.closest('[data-soon]')
+  if (!soon) return
+  e.preventDefault()
+  showSoonToast((I18N[lang] || I18N.zh)['soon.toast'])
+})
+
 // 年份兜底（若模板里有占位）
 document.querySelectorAll('[data-year]').forEach((el) => (el.textContent = '2026'))

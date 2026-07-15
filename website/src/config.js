@@ -2,7 +2,7 @@
 // nav / footer partial 与页面均从此处取值，未来加多页时改这一处即可。
 export const site = {
   brand: 'Brainary',
-  brandZh: '领智智能',
+  brandZh: '瓴知智能',
   // 文档入口：部署后与官网同源，文档挂在 <base>docs/（方案 4.1）。
   // 用「相对」路径：官网是站点根的单页，相对 docs/ 在根部署(/docs/)与
   // GitHub Pages 子路径(/brainary-docs/docs/)下都能正确解析，无需知道 base。

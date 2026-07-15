@@ -26,7 +26,9 @@ const linkHtml = (l) => {
     : ''
   // external（如 SDK 文档 /docs/）在新标签页打开、保留官网页；rel=noopener 防 tab-nabbing。
   const target = l.external ? ' target="_blank" rel="noopener"' : ''
-  return `<a href="${l.href}"${target}
+  // soon 项（如 Code SDK）尚未上线：标 data-soon，点击由 main.js 拦截并弹「即将上线」提示，而非跳死链。
+  const soonAttr = l.soon ? ' data-soon aria-disabled="true"' : ''
+  return `<a href="${l.href}"${target}${soonAttr}
       class="text-sm text-[var(--color-mist)] hover:text-[var(--color-ink)] transition-colors"><span data-i18n="nav.${l.key}">${l.label}</span>${soon}</a>`
 }
 

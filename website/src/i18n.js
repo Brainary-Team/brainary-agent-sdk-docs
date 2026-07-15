@@ -4,9 +4,9 @@
 
 export const I18N = {
   zh: {
-    'meta.title': 'Brainary · 会自我进化的元认知智能体 | 领智智能',
+    'meta.title': 'Brainary · 会自我进化的元认知智能体 | 瓴知智能',
     'meta.desc':
-      'Brainary（领智智能）—— 具备元认知、自我认知与自我进化能力的智能体。召之即来，从编码到日常工作、辅助思考与数字分身。',
+      'Brainary（瓴知智能）—— 具备元认知、自我认知与自我进化能力的智能体。召之即来，从编码到日常工作、辅助思考与数字分身。',
 
     // 导航
     'nav.home': '首页',
@@ -24,7 +24,6 @@ export const I18N = {
 
     // Hero
     'hero.pill': 'METACOGNITIVE AGENT',
-    'hero.badge': 'v0 · 预览',
     'hero.lead1': '一个会',
     'hero.lead2': '的智能体',
     'hero.tw': ['自我认知', '元认知推理', '自我进化', '仿生架构'],
@@ -36,10 +35,9 @@ export const I18N = {
     'hero.t2': '元认知 · 自我进化',
     'hero.t3': '记忆 · 工具 · 自省闭环',
 
-    // Hero self-trace 自省流(签名元素;DEMO 示意,不代表真实数据)
+    // Hero self-trace 自省流(签名元素;示意性内容,不代表真实数据)
     // 三个场景:s1 编码自审 / s2 会议纪要 / s3 流程蒸馏;tab 可切,播完自动轮到下一幕
     'trace.title': 'brainary · self-trace',
-    'trace.tag': 'DEMO 示意',
     'trace.tab1': '编码自审',
     'trace.tab2': '会议纪要',
     'trace.tab3': '流程蒸馏',
@@ -94,6 +92,7 @@ export const I18N = {
     'entry.code.title': 'Code SDK 文档',
     'entry.code.desc': '面向编码场景的 Brainary Code 产品文档，正在打磨，敬请期待。',
     'entry.code.cta': '即将上线',
+    'soon.toast': 'Code SDK 文档即将上线，敬请期待。',
 
     // CTA
     'cta.title': '一个会思考自己的智能体，替你做事',
@@ -105,7 +104,6 @@ export const I18N = {
     // 页脚
     'footer.tagline':
       '具备元认知与自我进化能力的智能体 —— 从编码到日常、思考与数字分身，召之即来，越用越懂你。',
-    'footer.demoTag': 'DEMO · 占位演示站',
     'footer.colProduct': '产品',
     'footer.cli': '安装 CLI',
     'footer.sdk': 'SDK 文档',
@@ -113,7 +111,7 @@ export const I18N = {
     'footer.colCompany': '公司',
     'footer.about': '关于',
     'footer.contact': '联系',
-    'footer.copyright': '© 2026 领智智能（Brainary）· 保留所有权利',
+    'footer.copyright': '© 2026 瓴知智能（Brainary）· 保留所有权利',
     'footer.mono': 'metacognitive · self-evolving · bionic',
 
     // 无障碍标签(aria-label,经 data-i18n-aria 应用)
@@ -144,7 +142,6 @@ export const I18N = {
 
     // Hero
     'hero.pill': 'METACOGNITIVE AGENT',
-    'hero.badge': 'v0 · Preview',
     'hero.lead1': 'An agent that',
     'hero.lead2': '',
     'hero.tw': ['knows itself', 'reasons about reasoning', 'evolves with use', 'thinks like a brain'],
@@ -156,10 +153,9 @@ export const I18N = {
     'hero.t2': 'Metacognition · Self-evolution',
     'hero.t3': 'Memory · Tools · Self-reflection loop',
 
-    // Hero self-trace stream (signature element; illustrative demo, not real data)
+    // Hero self-trace stream (signature element; illustrative content, not real data)
     // Three scenes: s1 code + self-review / s2 meeting digest / s3 workflow distillation
     'trace.title': 'brainary · self-trace',
-    'trace.tag': 'DEMO',
     'trace.tab1': 'coding',
     'trace.tab2': 'meetings',
     'trace.tab3': 'distill',
@@ -218,6 +214,7 @@ export const I18N = {
     'entry.code.desc':
       'Docs for Brainary Code, the coding-focused product — in the works, stay tuned.',
     'entry.code.cta': 'Coming soon',
+    'soon.toast': 'Code SDK docs are coming soon.',
 
     // CTA
     'cta.title': 'An agent that thinks about itself — working for you',
@@ -229,7 +226,6 @@ export const I18N = {
     // Footer
     'footer.tagline':
       'An agent with metacognition and self-evolution — from coding to daily work, thinking and a digital twin. Summon it on demand; it understands you more over time.',
-    'footer.demoTag': 'DEMO · Placeholder site',
     'footer.colProduct': 'Product',
     'footer.cli': 'Install CLI',
     'footer.sdk': 'SDK Docs',
@@ -237,7 +233,7 @@ export const I18N = {
     'footer.colCompany': 'Company',
     'footer.about': 'About',
     'footer.contact': 'Contact',
-    'footer.copyright': '© 2026 Lingzhi AI (Brainary) · All rights reserved',
+    'footer.copyright': '© 2026 Lingzhi Intelligent Technology (Brainary) · All rights reserved',
     'footer.mono': 'metacognitive · self-evolving · bionic',
 
     // Accessibility labels (aria-label, applied via data-i18n-aria)
