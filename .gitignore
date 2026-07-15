@@ -22,3 +22,6 @@ dist/
 
 # 本地临时目录
 local/
+
+# Claude Code 本地指令文件（不推送远程）
+CLAUDE.md
