@@ -96,7 +96,6 @@ export default withMermaid(defineConfig({
           items: [
             { text: '能力总览', link: '/sdk/overview' },
             { text: '示例用法', link: '/sdk/examples' },
-            { text: '接口索引', link: '/sdk/api-index' },
           ],
         },
         {
@@ -108,6 +107,10 @@ export default withMermaid(defineConfig({
             { text: '消息模型', link: '/sdk/messages' },
             { text: '运行一个 PoA（poa feature）', link: '/sdk/running-a-poa' },
           ],
+        },
+        {
+          text: '接口索引',
+          link: '/sdk/api-index',
         },
         {
           text: '工具与扩展',
@@ -138,7 +141,6 @@ export default withMermaid(defineConfig({
           items: [
             { text: '能力总览', link: '/sdk-py/overview' },
             { text: '示例用法', link: '/sdk-py/examples' },
-            { text: '接口索引', link: '/sdk-py/api-index' },
           ],
         },
         {
@@ -149,6 +151,10 @@ export default withMermaid(defineConfig({
             { text: 'Options 配置', link: '/sdk-py/options' },
             { text: '消息模型', link: '/sdk-py/messages' },
           ],
+        },
+        {
+          text: '接口索引',
+          link: '/sdk-py/api-index',
         },
         {
           text: '工具与扩展',

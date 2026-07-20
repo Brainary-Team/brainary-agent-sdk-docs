@@ -1,14 +1,14 @@
 {
-  "latest": "3caa334",
+  "latest": "43b8395",
   "versions": [
     {
-      "version": "3caa334",
+      "version": "43b8395",
       "stable": true,
-      "commit": "3caa334cf322933fa314c60c86a859cd1612a9a6",
-      "date": "2026-07-10",
+      "commit": "43b83951a604b9c3f3bc0457d0ea8112a24f1037",
+      "date": "2026-07-16",
       "ref": "origin/master",
-      "subject": "initial refactor & claude refactor",
-      "label": "rs@3caa334 · 2026-07-10 (latest)"
+      "subject": "remove working memory",
+      "label": "rs@43b8395 · 2026-07-16 (latest)"
     }
   ]
 }
