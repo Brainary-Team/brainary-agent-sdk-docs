@@ -141,6 +141,7 @@ export default withMermaid(defineConfig({
           items: [
             { text: '能力总览', link: '/sdk-py/overview' },
             { text: '示例用法', link: '/sdk-py/examples' },
+            { text: '接口速览', link: '/sdk-py/api-planning' },
           ],
         },
         {
