@@ -206,6 +206,34 @@ document.querySelectorAll('[data-install-cmd]').forEach((el) => {
   if (site.cliInstallCmd) el.textContent = site.cliInstallCmd
 })
 
+// ── CLI 版本徽标：运行时取 GitHub releases/latest 的 tag_name，填入全站 [data-cli-version] ──
+// 与 install.sh 下载的 latest 同源、随发版自动更新（官网零改动）；网络/限流/无 release 时静默隐藏。
+// sessionStorage 缓存本会话结果，避免每次访问都打 API（未认证限流 60/h/IP）。
+;(async () => {
+  const targets = document.querySelectorAll('[data-cli-version]')
+  if (!targets.length || !site.cliLatestReleaseApi) return
+  const reveal = (tag) => {
+    if (!tag) return
+    targets.forEach((el) => { el.textContent = tag })
+    document.querySelectorAll('[data-cli-version-wrap]').forEach((el) => el.removeAttribute('hidden'))
+  }
+  try {
+    const cached = sessionStorage.getItem('cliLatestTag')
+    if (cached) { reveal(cached); return }
+  } catch (_) {}
+  try {
+    const res = await fetch(site.cliLatestReleaseApi, { headers: { Accept: 'application/vnd.github+json' } })
+    if (!res.ok) return
+    const data = await res.json()
+    const tag = typeof data?.tag_name === 'string' ? data.tag_name : ''
+    if (!tag) return
+    try { sessionStorage.setItem('cliLatestTag', tag) } catch (_) {}
+    reveal(tag)
+  } catch (_) {
+    // 离线/跨域/限流：徽标保持隐藏，不影响页面其余部分
+  }
+})()
+
 async function copyText(text) {
   try {
     if (navigator.clipboard && window.isSecureContext) {

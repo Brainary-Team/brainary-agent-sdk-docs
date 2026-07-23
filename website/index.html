@@ -87,6 +87,11 @@
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                 </a>
                 <span class="font-mono text-xs text-[var(--color-faint)]" data-i18n="install.hint">macOS / Linux · 复制到终端运行</span>
+                <!-- CLI 版本徽标：默认隐藏，main.js 取到 GitHub releases/latest 的 tag_name 后填充并显示；取不到则静默保持隐藏 -->
+                <span class="font-mono text-xs text-[var(--color-faint)]" data-cli-version-wrap hidden>
+                  <span data-i18n="install.version">最新版</span>
+                  <span data-cli-version></span>
+                </span>
               </div>
             </div>
 
