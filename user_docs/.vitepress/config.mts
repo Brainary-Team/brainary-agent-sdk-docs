@@ -45,8 +45,8 @@ const viteOverride = {
 // 版本切换（Python 式冻结快照，见 snapshot.sh / VersionSwitcher.vue）：
 //   base 按 DOCS_VERSION 参数化 → 发版构建产物落在 /docs/<ver>/ 下。VitePress
 //   在「构建时」给所有根绝对链接（/sdk/x）自动加 base 前缀，故切版本无需改任何链接。
-//   版本段（<ver>）此处不作格式假设：预 tag 阶段是 brainary-rs 提交短 hash
-//   （如 9541095，snapshot.sh 自动派生），正式 tag 后可为 semver（如 1.0）。
+//   版本段（<ver>）此处不作格式假设：采用 semver（如 v0.0.1），与 CLI 二进制的 GitHub
+//   release tag 对齐，由 snapshot.sh --version 显式给定。
 //   下拉框对「首段是不是版本段」的判定是清单驱动的（见 VersionSwitcher.parsePath），
 //   与段的具体命名解耦，故这里改版本命名无需动任何解析代码。
 //   ⚠ 作者纪律：markdown 内部链接一律写根绝对且不含版本（/sdk/… 、/sdk-py/…），
@@ -71,6 +71,15 @@ export default withMermaid(defineConfig({
   // 高度 → 多行节点上下两行被裁。这里清零段内外边距、并给 foreignObject 开
   // overflow 兜底。用 head 内联样式而非自定义 theme，避免干扰 mermaid 组件注册。
   head: [
+    // favicon：与官网（website/index.html）完全一致的内联 SVG data URI（本地、无外链），
+    // 保证官网与文档站标签页图标统一。深色圆底垫底，白底/黑底标签页都看得清。
+    [
+      'link',
+      {
+        rel: 'icon',
+        href: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='12' fill='%2304050a'/%3E%3Ccircle cx='12' cy='12' r='2.4' fill='%232ff0cf'/%3E%3Ccircle cx='5' cy='6' r='1.6' fill='%237dffe4'/%3E%3Ccircle cx='19' cy='7' r='1.6' fill='%2314b89c'/%3E%3Ccircle cx='6' cy='18' r='1.6' fill='%232ff0cf'/%3E%3Ccircle cx='18' cy='17' r='1.6' fill='%237dffe4'/%3E%3Cg stroke='%232ff0cf' stroke-width='0.9' opacity='0.65'%3E%3Cline x1='12' y1='12' x2='5' y2='6'/%3E%3Cline x1='12' y1='12' x2='19' y2='7'/%3E%3Cline x1='12' y1='12' x2='6' y2='18'/%3E%3Cline x1='12' y1='12' x2='18' y2='17'/%3E%3C/g%3E%3C/svg%3E",
+      },
+    ],
     [
       'style',
       {},

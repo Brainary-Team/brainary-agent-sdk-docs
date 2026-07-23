@@ -15,12 +15,10 @@ import { inBrowser } from 'vitepress'
 declare const __DOCS_ROOT__: string
 
 interface VersionEntry {
-  version: string // URL 段：预 tag 阶段是 brainary-rs 短 hash，正式 tag 后可为 semver
-  label: string // 下拉显示文案，如 `rs@9541095 · 2026-07-06 (latest)`
+  version: string // URL 段：semver（如 v0.0.1），与 CLI 二进制 release tag 对齐
+  label: string // 下拉显示文案，如 `v0.0.1 · 2026-07-23 (latest)`
   stable?: boolean
-  commit?: string // 关联的 brainary-rs 完整 40 位 commit（溯源用，展示在 tooltip）
-  date?: string // 该 commit 的提交日期 YYYY-MM-DD
-  ref?: string // 派生所用的 git ref，如 origin/master
+  date?: string // 发布日期 YYYY-MM-DD（展示用）
 }
 
 // 全站文档根前缀（编译期注入，随部署基路径变化）。所有版本挂在它下面：
@@ -41,16 +39,11 @@ const currentLabel = computed(() => {
   return hit ? hit.label : current.value
 })
 
-// 当前版本对应的完整条目（用于 trigger 的 commit/date 溯源 tooltip）。
+// 当前版本对应的完整条目（用于 trigger 的日期 tooltip）。
 const currentEntry = computed(() => versions.value.find((v) => v.version === current.value) || null)
 const currentTitle = computed(() => {
   const e = currentEntry.value
-  if (!e) return '切换文档版本'
-  const parts: string[] = []
-  if (e.ref) parts.push(e.ref)
-  if (e.commit) parts.push(`brainary-rs @ ${e.commit}`)
-  if (e.date) parts.push(e.date)
-  return parts.length ? parts.join('\n') : '切换文档版本'
+  return e?.date ? `发布日期 ${e.date}` : '切换文档版本'
 })
 
 // 从 /docs/<ver>/sdk-py/options.html 解析出 [版本段, 语言相对子路径]。

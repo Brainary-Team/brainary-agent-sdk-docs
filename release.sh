@@ -6,10 +6,8 @@
 #   .github/workflows/deploy.yml 会自动 build 并部署到 GitHub Pages。
 #
 #   用法（参数原样透传给 snapshot.sh）：
-#     ./release.sh                 # 冻结 brainary-rs origin/master 最新 → 短 hash 版本
-#     ./release.sh --ref <gitref>  # 冻结指定 ref
-#     ./release.sh --version 1.0   # 正式 semver 版本
-#     ./release.sh --replace ...   # 替换而非追加：只保留这一版（预 tag 阶段防版本堆积）
+#     ./release.sh --version v0.0.1            # 冻结为版本 v0.0.1（semver，与二进制 tag 对齐）
+#     ./release.sh --replace --version v0.0.1  # 替换而非追加：只保留这一版（替换重冻同名版本）
 #
 #   提示：CI 部署仅从 main 分支触发。当前若在其它分支，本脚本照常提交推送该分支，
 #         但需合并到 main（或在 GitHub Actions 手动 dispatch）才会真正部署。
