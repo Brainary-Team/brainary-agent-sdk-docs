@@ -19,6 +19,7 @@ export const I18N = {
     'install.copy': '复制',
     'install.copied': '已复制',
     'install.hint': 'macOS / Linux · 复制到终端运行',
+    'install.version': '最新版',
     'install.boxAria': 'Brainary CLI 安装命令',
     'install.copyAria': '复制安装命令',
 
@@ -137,6 +138,7 @@ export const I18N = {
     'install.copy': 'Copy',
     'install.copied': 'Copied',
     'install.hint': 'macOS / Linux · paste into your terminal',
+    'install.version': 'latest',
     'install.boxAria': 'Brainary CLI install command',
     'install.copyAria': 'Copy install command',
 

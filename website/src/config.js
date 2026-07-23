@@ -14,6 +14,9 @@ export const site = {
   //   二进制托管在 GitHub Release（随 latest 自动更新），脚本负责下载 + 建 ~/.brainary/config.toml。
   //   单一真源：main.js 会把此串写进页面所有 [data-install-cmd]，HTML 里的同串仅作无-JS 兜底。
   cliInstallCmd: 'curl -fsSL https://docs.lzbrainary.com/install.sh | sh',
+  // CLI 版本徽标：运行时向 GitHub API 取 releases/latest 的 tag_name 显示，与 install.sh 下载的
+  //   latest 同源、随发版自动更新（官网零改动）；取不到则静默隐藏。换 repo 只改这一处。
+  cliLatestReleaseApi: 'https://api.github.com/repos/Brainary-Team/brainary-agent-sdk-docs/releases/latest',
   // 导航/页脚「安装 CLI」指向首屏安装命令框（锚点）。
   installAnchor: '#install',
   year: 2026,
