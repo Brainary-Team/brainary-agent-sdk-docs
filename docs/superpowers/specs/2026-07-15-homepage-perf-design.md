@@ -4,7 +4,7 @@
 分支：`dev/homepage-perf`
 
 > ⚠️ **本文为实施前的设计快照，其元凶排序已被实测推翻，第二／三档方案均未进入最终方案。**
-> **最终结论与完整实测数据见仓库根目录 `PERF-HOMEPAGE.md`。** 本文仅存档设计过程。
+> **最终结论与完整实测数据见同目录 `2026-07-15-homepage-perf-final.md`。** 本文仅存档设计过程。
 >
 > 简述：第二档（shadowBlur → 预渲染精灵）实测为负优化，废弃；
 > 第三档（background-size → transform）在 Apple M4 上零可测收益、
