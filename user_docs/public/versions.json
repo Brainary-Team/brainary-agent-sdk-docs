@@ -1,14 +1,11 @@
 {
-  "latest": "43b8395",
+  "latest": "v0.0.1",
   "versions": [
     {
-      "version": "43b8395",
+      "version": "v0.0.1",
       "stable": true,
-      "commit": "43b83951a604b9c3f3bc0457d0ea8112a24f1037",
-      "date": "2026-07-16",
-      "ref": "origin/master",
-      "subject": "remove working memory",
-      "label": "rs@43b8395 · 2026-07-16 (latest)"
+      "date": "2026-07-23",
+      "label": "v0.0.1 · 2026-07-23 (latest)"
     }
   ]
 }
