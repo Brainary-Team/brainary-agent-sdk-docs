@@ -130,8 +130,23 @@ case ":${PATH}:" in
   *":${INSTALL_DIR}:"*) ON_PATH=1 ;;
 esac
 
+# ── 探测已安装版本（仅用于展示）──────────────────────────────
+# 优先让二进制自报版本（brainary --version）；若该 flag 不被支持 / 二进制无法执行，
+# 回退到 GitHub Release 的 tag_name（与官网版本徽标同源）。都取不到则留空、不展示——
+# 探测失败绝不中断安装（if 条件里的失败不触发 set -e；curl 回退加 || true 兜底）。
+INSTALLED_VERSION=""
+if _v="$("$BIN_PATH" --version 2>/dev/null)" && [ -n "$_v" ]; then
+  INSTALLED_VERSION="$_v"
+else
+  _tag="$(curl -fsSL "https://api.github.com/repos/${REPO}/releases/latest" 2>/dev/null \
+    | grep -o '"tag_name"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 \
+    | sed 's/.*"\([^"]*\)"$/\1/' || true)"
+  [ -n "$_tag" ] && INSTALLED_VERSION="$_tag"
+fi
+
 # ── 6. 收尾提示 ──────────────────────────────────────────────
 printf '\n%s✔ %s!%s\n\n' "$C_GREEN$C_BOLD" "$DONE" "$C_RESET"
+[ -n "$INSTALLED_VERSION" ] && printf '  %sversion%s %s\n' "$C_DIM" "$C_RESET" "$INSTALLED_VERSION"
 printf '  %sbinary%s  %s\n' "$C_DIM" "$C_RESET" "$BIN_PATH"
 printf '  %sconfig%s  %s\n\n' "$C_DIM" "$C_RESET" "$CONFIG_PATH"
 
